@@ -64,6 +64,7 @@ class Trainer:
         ckpt = self.checkpoint
 
         self.now = time.perf_counter()
+        self.begin = time.perf_counter()
         print("Training begins @ %s" % self.now)
 
         for lr, hr in train_dataset.take(steps - ckpt.step.numpy()):
@@ -76,8 +77,11 @@ class Trainer:
             loss = self.train_step(lr, hr)
             loss_mean(loss)
             print(step)
-            if step % 1000 == 0:
-                print("step %d: loss = %.4f" % (step, loss_mean.result()))
+            if step % 500 == 0:
+                duration = time.perf_counter() - self.begin
+                print(
+                    f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
+                )
 
             if step % evaluate_every == 0:
                 loss_value = loss_mean.result()
