@@ -82,7 +82,7 @@ class Trainer:
                     f"{step}/{steps}: ({duration:.2f}s)"
                 )
 
-            if step % evaluate_every == 0:
+            if step % evaluate_every == 0 or step < 5:
                 print('a')
                 loss_value = loss_mean.result()
                 print('b')
@@ -151,6 +151,7 @@ class Trainer:
         return loss_value
 
     def evaluate(self, dataset, nbit=16):
+        print('step in evaluate')
         return evaluate(self.checkpoint.model, dataset, nbit=nbit)
 
     def restore(self):

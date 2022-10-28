@@ -35,13 +35,18 @@ def resolve16(model, lr_batch, nbit=16):
 
 
 def evaluate(model, dataset, nbit=8):
+    print('fully stepped into evaluate')
     psnr_values = []
     for lr, hr in dataset:
+        print('aa')
         sr = resolve16(model, lr, nbit=nbit)  # hack
+        print('ab')
         if lr.shape[-1] == 1:
             sr = sr[..., 0, None]
         #        psnr_value = psnr16(hr, sr)[0]
+        print('ac')
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
+        print('ad')
         psnr_values.append(psnr_value)
     return tf.reduce_mean(psnr_values)
 
