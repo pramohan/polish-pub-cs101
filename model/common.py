@@ -19,6 +19,7 @@ def resolve(model, lr_batch):
 
 
 def resolve16(model, lr_batch, nbit=16):
+    print('nbit is', nbit)
     if nbit == 8:
         casttype = tf.uint8
     elif nbit == 16:
@@ -26,6 +27,7 @@ def resolve16(model, lr_batch, nbit=16):
     else:
         print("Wrong number of bits")
         exit()
+    print('yuh')
     lr_batch = tf.cast(lr_batch, tf.float32)
     sr_batch = model(lr_batch)
     sr_batch = tf.clip_by_value(sr_batch, 0, 2**nbit - 1)
@@ -39,6 +41,7 @@ def evaluate(model, dataset, nbit=8):
     psnr_values = []
     for lr, hr in dataset:
         print('aa')
+        print(nbit)
         sr = resolve16(model, lr, nbit=nbit)  # hack
         print('ab')
         if lr.shape[-1] == 1:
