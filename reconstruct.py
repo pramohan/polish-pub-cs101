@@ -78,7 +78,8 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.title("Dirty map", color="C1", fontsize=17)
     plt.axis("off")
     if regular_image:
-        plt.imshow(datalr)
+        print("datalr shape", datalr.shape)
+        plt.imshow(datalr.squeeze())
     else:
         plt.imshow(
             datalr[..., 0],
@@ -93,6 +94,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     ax2 = plt.subplot(1, nsub, 2, sharex=ax1, sharey=ax1)
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
     if regular_image:
+        print("datasr shape", datasr.shape)
         plt.imshow(datasr)
     else:
         plt.imshow(
