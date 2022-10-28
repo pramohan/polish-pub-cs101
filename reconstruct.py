@@ -56,6 +56,8 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16):
     
 
     print(datalr.shape)
+    if len(datalr.shape) == 4:
+        datalr = datalr.squeeze()
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
     print(datasr.shape)
