@@ -29,10 +29,15 @@ def resolve16(model, lr_batch, nbit=16):
         exit()
     print('yuh')
     lr_batch = tf.cast(lr_batch, tf.float32)
+    print('aaa')
     sr_batch = model(lr_batch)
+    print('aab')
     sr_batch = tf.clip_by_value(sr_batch, 0, 2**nbit - 1)
+    print('aac')
     sr_batch = tf.round(sr_batch)
+    print('aad')
     sr_batch = tf.cast(sr_batch, casttype)
+    print('aae')
     return sr_batch
 
 
