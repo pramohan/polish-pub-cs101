@@ -55,14 +55,11 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16):
     datalr = datalr[:, :, None]
     
 
-    print(datalr.shape)
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
-        datalr = datalr[:,:,:, 0]
-    print(datalr.shape)
+        datalr = datalr[:,:,:,0]
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
-    print(datasr.shape)
     return datalr, datasr, datahr
 
 
@@ -86,7 +83,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.axis("off")
     if regular_image:
         print("datalr shape", datalr.shape)
-        plt.imshow(datalr.squeeze(), cmap="brg")
+        plt.imshow(datalr.squeeze(), cmap="RdBu")
     else:
         plt.imshow(
             datalr[..., 0],
@@ -102,7 +99,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
     if regular_image:
         print("datasr shape", datasr.shape)
-        plt.imshow(datasr.squeeze(), cmap="brg")
+        plt.imshow(datasr.squeeze(), cmap="RdBu")
     else:
         plt.imshow(
             datasr[..., 0],
