@@ -79,7 +79,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.axis("off")
     if regular_image:
         print("datalr shape", datalr.shape)
-        plt.imshow(datalr.squeeze())
+        plt.imshow(datalr.squeeze(), cmap="brg")
     else:
         plt.imshow(
             datalr[..., 0],
@@ -95,7 +95,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
     if regular_image:
         print("datasr shape", datasr.shape)
-        plt.imshow(datasr)
+        plt.imshow(datasr.squeeze(), cmap="brg")
     else:
         plt.imshow(
             datasr[..., 0],
