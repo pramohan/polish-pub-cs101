@@ -270,7 +270,7 @@ def func(
         datalr = f[0].data[0, 0]
     else:
         print("Do not recognize input image file type, exiting")
-        exit()
+        raise Exception
 
     if fn_img_hr != None:
         if fn_img_hr.endswith(".npy"):
@@ -298,7 +298,7 @@ def func(
             print(kernel.shape)
         else:
             print("Can't interpret kernel")
-            exit()
+            raise Exception
 
         if distortpsf:
             plt.figure()
@@ -345,7 +345,7 @@ def func(
 
     datasr = resolve_single(model, datalr, nbit=nbit)
     print(datasr.shape, datalr.shape)
-    exit()
+    raise Exception
     if fitgal:
         import scipy.optimize as opt
 

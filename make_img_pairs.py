@@ -232,7 +232,7 @@ def create_LR_image(
         fl = glob.glob(fl + "/*.png")
         if len(fl) == 0:
             print("Input file list is empty")
-            exit()
+            raise Exception
     elif type(fl) is list:
         fl.sort()
     elif fl == None:

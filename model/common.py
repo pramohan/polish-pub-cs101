@@ -26,7 +26,7 @@ def resolve16(model, lr_batch, nbit=16):
         casttype = tf.uint16
     else:
         print("Wrong number of bits")
-        exit()
+        raise Exception
     print('yuh')
     lr_batch = tf.cast(lr_batch, tf.float32)
     print('aaa')

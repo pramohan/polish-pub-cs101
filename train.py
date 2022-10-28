@@ -114,7 +114,7 @@ class Trainer:
         # lr_estimate = tf.nn.conv2d(sr, kernel, strides=[1, 1, 1, 1], padding='VALID')
 
         print(lr.shape, lr_estimate[2::4, 2::4].shape)
-        exit()
+        raise Exception
 
     #     return self.loss(lr, lr_estimate)
 

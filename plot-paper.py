@@ -105,7 +105,7 @@ def get_psf_stats_txt(fn, extent_deg, pixel_scale=0.5):
 
 #     fnout=fn[:-5]+'out.npy'
 #     np.save(fnout,np.concatenate([d, av, rstd, rmax]).reshape(4, -1))
-#     exit()
+#     raise Exception
 # #    d = np.linspace(0, av.shape[0]*3600, av.shape[0])
 #     plt.plot(d, np.abs(av))
 #     plt.plot(d, rstd)
