@@ -83,14 +83,14 @@ class Trainer:
                 )
 
             if step % evaluate_every == 0 or step < 5:
-                print('a')
+                # print('a')
                 loss_value = loss_mean.result()
-                print('b')
+                # print('b')
                 loss_mean.reset_states()
-                print('c')
+                # print('c')
                 # Compute PSNR on validation dataset
                 psnr_value = self.evaluate(valid_dataset, nbit=nbit)
-                print('d')
+                # print('d')
                 duration = time.perf_counter() - self.now
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
@@ -100,11 +100,11 @@ class Trainer:
                     self.now = time.perf_counter()
                     # skip saving checkpoint, no PSNR improvement
                     continue
-                print('E')
+                # print('E')
                 ckpt.psnr = psnr_value
-                print('f')
+                # print('f')
                 ckpt_mgr.save()
-                print('g')
+                # print('g')
 
                 self.now = time.perf_counter()
         print("Done training @ %s" % self.now)
@@ -151,7 +151,7 @@ class Trainer:
         return loss_value
 
     def evaluate(self, dataset, nbit=16):
-        print('step in evaluate')
+        # print('step in evaluate')
         return evaluate(self.checkpoint.model, dataset, nbit=nbit)
 
     def restore(self):

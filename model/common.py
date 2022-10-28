@@ -19,7 +19,7 @@ def resolve(model, lr_batch):
 
 
 def resolve16(model, lr_batch, nbit=16):
-    print('nbit is', nbit)
+    # print('nbit is', nbit)
     if nbit == 8:
         casttype = tf.uint8
     elif nbit == 16:
@@ -27,34 +27,34 @@ def resolve16(model, lr_batch, nbit=16):
     else:
         print("Wrong number of bits")
         raise Exception
-    print('yuh')
+    # print('yuh')
     lr_batch = tf.cast(lr_batch, tf.float32)
-    print('aaa')
+    # print('aaa')
     sr_batch = model(lr_batch)
-    print('aab')
+    # print('aab')
     sr_batch = tf.clip_by_value(sr_batch, 0, 2**nbit - 1)
-    print('aac')
+    # print('aac')
     sr_batch = tf.round(sr_batch)
-    print('aad')
+    # print('aad')
     sr_batch = tf.cast(sr_batch, casttype)
-    print('aae')
+    # print('aae')
     return sr_batch
 
 
 def evaluate(model, dataset, nbit=8):
-    print('fully stepped into evaluate')
+    # print('fully stepped into evaluate')
     psnr_values = []
     for lr, hr in dataset:
-        print('aa')
-        print(nbit)
+        # print('aa')
+        # print(nbit)
         sr = resolve16(model, lr, nbit=nbit)  # hack
-        print('ab')
+        # print('ab')
         if lr.shape[-1] == 1:
             sr = sr[..., 0, None]
         #        psnr_value = psnr16(hr, sr)[0]
-        print('ac')
+        # print('ac')
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
-        print('ad')
+        # print('ad')
         psnr_values.append(psnr_value)
     return tf.reduce_mean(psnr_values)
 
