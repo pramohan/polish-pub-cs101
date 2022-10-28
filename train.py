@@ -74,8 +74,8 @@ class Trainer:
             #            lr = tf.image.adjust_gamma(lr, 0.5)
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
             loss = self.train_step(lr, hr)
-            print('loss', loss)
             loss_mean(loss)
+            print(step)
             if step % 1000 == 0:
                 print("step %d: loss = %.4f" % (step, loss_mean.result()))
 
