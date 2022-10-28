@@ -115,6 +115,14 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.tight_layout()
     plt.show()
 
+def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True):
+    datalr, datasr, datahr = reconstruct(fn_img, fn_model, scale, fnhr, nbit)
+    if datahr is not None:
+        nsub = 3
+    else:
+        nsub = 2
+    if plotit:
+        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub)
 
 if __name__ == "__main__":
     # Example usage:
