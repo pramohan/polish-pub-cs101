@@ -59,7 +59,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16):
     return datalr, datasr, datahr
 
 
-def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"):
+def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot",regular_image=False):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
@@ -77,26 +77,32 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     ax1 = plt.subplot(1, nsub, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
     plt.axis("off")
-    plt.imshow(
-        datalr[..., 0],
-        cmap=cmap,
-        vmax=vmaxlr,
-        vmin=vminlr,
-        aspect="auto",
-        extent=[0, 1, 0, 1],
-    )
+    if regular_image:
+        plt.imshow(datalr)
+    else:
+        plt.imshow(
+            datalr[..., 0],
+            cmap=cmap,
+            vmax=vmaxlr,
+            vmin=vminlr,
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
     plt.setp(ax1.spines.values(), color="C1")
 
     ax2 = plt.subplot(1, nsub, 2, sharex=ax1, sharey=ax1)
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
-    plt.imshow(
-        datasr[..., 0],
-        cmap=cmap,
-        vmax=vmaxsr,
-        vmin=vminsr,
-        aspect="auto",
-        extent=[0, 1, 0, 1],
-    )
+    if regular_image:
+        plt.imshow(datasr)
+    else:
+        plt.imshow(
+            datasr[..., 0],
+            cmap=cmap,
+            vmax=vmaxsr,
+            vmin=vminsr,
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
     plt.axis("off")
 
     if nsub == 3:
@@ -115,14 +121,14 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.tight_layout()
     plt.show()
 
-def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True):
+def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False):
     datalr, datasr, datahr = reconstruct(fn_img, fn_model, scale, fnhr, nbit)
     if datahr is not None:
         nsub = 3
     else:
         nsub = 2
     if plotit:
-        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub)
+        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image)
 
 if __name__ == "__main__":
     # Example usage:
