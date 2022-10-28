@@ -66,11 +66,14 @@ def main(
         model=wdsr_b(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
+    print("Loaded in trainer")
 
     # Train WDSR B model for train_steps steps and evaluate model
     # every 1000 steps on the first 10 images of the DIV2K
     # validation set. Save a checkpoint only if evaluation
     # PSNR has improved.
+
+    print("Training begins")
 
     trainer.train(
         train_ds,
