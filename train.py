@@ -76,20 +76,21 @@ class Trainer:
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
             loss = self.train_step(lr, hr)
             loss_mean(loss)
-            print(step)
             if step % 500 == 0:
                 duration = time.perf_counter() - self.begin
                 print(
-                    f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
+                    f"{step}/{steps}: ({duration:.2f}s)"
                 )
 
             if step % evaluate_every == 0:
+                print('a')
                 loss_value = loss_mean.result()
+                print('b')
                 loss_mean.reset_states()
-
+                print('c')
                 # Compute PSNR on validation dataset
                 psnr_value = self.evaluate(valid_dataset, nbit=nbit)
-
+                print('d')
                 duration = time.perf_counter() - self.now
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
@@ -99,9 +100,11 @@ class Trainer:
                     self.now = time.perf_counter()
                     # skip saving checkpoint, no PSNR improvement
                     continue
-
+                print('E')
                 ckpt.psnr = psnr_value
+                print('f')
                 ckpt_mgr.save()
+                print('g')
 
                 self.now = time.perf_counter()
         print("Done training @ %s" % self.now)
