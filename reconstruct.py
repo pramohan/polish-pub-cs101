@@ -7,6 +7,7 @@ import matplotlib.pylab as plt
 from model import resolve_single
 from utils import load_image, plot_sample
 from model.wdsr import wdsr_b
+import numpy as np
 
 plt.rcParams.update(
     {
@@ -37,6 +38,9 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
         try:
             datalr = load_image(fn_img)
             if regular_image:
+                # find maximum and minimum values of datalr
+                print("datalr min", np.min(datalr))
+                print("datalr max", np.max(datalr))
                 pass
             print('datalr shape', datalr.shape)
         except:
