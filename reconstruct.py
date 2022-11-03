@@ -3,7 +3,7 @@ import sys
 
 import optparse
 import matplotlib.pylab as plt
-
+import time
 from model import resolve_single
 from utils import load_image, plot_sample
 from model.wdsr import wdsr_b, wdsr_mc
@@ -112,17 +112,25 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
                 return
     else:
         datahr = None
+    print('Loaded image')
 
     model = wdsr_mc(scale=scale, num_res_blocks=32)
+    print('made the model')
     model.load_weights(fn_model)
+    print('loaded the weights')
     datalr = datalr[:, :, None]
     
 
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:,:,:,0]
+    print('Iterating through MC samples')
+    now = time.perf_counter()
+
     mc_data = []
     for i in range(50):
+        print(f"Sample {i}, time {time.perf_counter() - now}")
+        now = time.perf_counter()
         datasr = resolve_single(model, datalr, nbit=nbit).numpy()
         if len(datasr.shape) == 3:
             datasr = np.squeeze(datasr)
