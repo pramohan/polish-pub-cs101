@@ -172,6 +172,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
         print("datasr shape", datasr.shape)
         plt.imshow(datasr.squeeze(), cmap="RdBu")
     else:
+        print(datasr.shape)
         plt.imshow(
             datasr[..., 0],
             cmap=cmap,
