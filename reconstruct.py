@@ -6,7 +6,7 @@ import matplotlib.pylab as plt
 
 from model import resolve_single
 from utils import load_image, plot_sample
-from model.wdsr import wdsr_b
+from model.wdsr import wdsr_b, wdsr_mc
 import numpy as np
 
 
@@ -113,7 +113,7 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     else:
         datahr = None
 
-    model = wdsr_b(scale=scale, num_res_blocks=32)
+    model = wdsr_mc(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
     
@@ -121,7 +121,15 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:,:,:,0]
-    datasr = resolve_single(model, datalr, nbit=nbit).numpy()
+    mc_data = []
+    for i in range(50):
+        datasr = resolve_single(model, datalr, nbit=nbit).numpy()
+        if len(datasr.shape) == 3:
+            datasr = np.squeeze(datasr)
+            mc_data.append(datasr)
+    mc_data = np.stack(mc_data, axis=-1)
+
+
     print(datasr.shape)
     return datalr, datasr, datahr
 
