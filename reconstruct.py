@@ -173,8 +173,10 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
         plt.imshow(datasr.squeeze(), cmap="RdBu")
     else:
         print(datasr.shape)
+        if len(datasr.shape) == 4:
+            datasr = datasr.squeeze()
         plt.imshow(
-            datasr[..., 0],
+            datasr,
             cmap=cmap,
             vmax=vmaxsr,
             vmin=vminsr,
