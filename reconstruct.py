@@ -128,10 +128,9 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
             datasr = np.squeeze(datasr)
             mc_data.append(datasr)
     mc_data = np.stack(mc_data, axis=-1)
-
-
+    print("mc_data shape ", mc_data.shape)
     print(datasr.shape)
-    return datalr, datasr, datahr
+    return datalr, datasr, datahr, mc_data
 
 
 def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot",regular_image=False):
@@ -202,13 +201,14 @@ def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_ima
         plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image)
 
 def main_mc_dropout(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False):
-    datalr, datasr, datahr = reconstruct_mc(fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image)
+    datalr, datasr, datahr, mc_data = reconstruct_mc(fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image)
     if datahr is not None:
         nsub = 3
     else:
         nsub = 2
     if plotit:
         plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image)
+    return mc_data
 
 if __name__ == "__main__":
     # Example usage:
