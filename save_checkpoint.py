@@ -77,8 +77,8 @@ def main(
 
     trainer.restore()
     # Evaluate model on full validation set.
-    psnr = trainer.evaluate(valid_ds)
-    print(f"PSNR = {psnr.numpy():3f}")
+    # psnr = trainer.evaluate(valid_ds)
+    # print(f"PSNR = {psnr.numpy():3f}")
 
     # Save weights to separate location.
     trainer.model.save_weights(fnoutweights)
