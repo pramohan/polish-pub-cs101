@@ -76,13 +76,8 @@ class Trainer:
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
             loss = self.train_step(lr, hr)
             loss_mean(loss)
-            if step % 500 == 0:
-                duration = time.perf_counter() - self.begin
-                print(
-                    f"{step}/{steps}: ({duration:.2f}s)"
-                )
 
-            if step % evaluate_every == 0 or step < 5:
+            if step % evaluate_every == 0 or step < 20:
                 # print('a')
                 loss_value = loss_mean.result()
                 # print('b')

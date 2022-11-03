@@ -229,7 +229,7 @@ def main_mc_dropout(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, 
     else:
         nsub = 2
     if plotit:
-        datasr = np.var(mc_data, axis=-1)
+        mc_data = np.var(mc_data, axis=-1)
         plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=mc_data)
     return mc_data
 
