@@ -128,27 +128,26 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     now = time.perf_counter()
 
     mc_data = []
-    for i in range(50):
+    for i in range(3):
         print(f"Sample {i}, time {time.perf_counter() - now}")
         now = time.perf_counter()
         datasr = resolve_single(model, datalr, nbit=nbit).numpy()
         if len(datasr.shape) == 3:
-            datasr = np.squeeze(datasr)
-            mc_data.append(datasr)
+            mc_data.append(np.squeeze(datasr))
     mc_data = np.stack(mc_data, axis=-1)
     print("mc_data shape ", mc_data.shape)
     print(datasr.shape)
     return datalr, datasr, datahr, mc_data
 
 
-def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot",regular_image=False):
+def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot",regular_image=False, mc_data=None):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
 
     if nsub == 2:
         fig = plt.figure(figsize=(10, 6))
-    if nsub == 3:
+    if nsub == 3 or mc_data is not None:
         fig = plt.figure(figsize=(13, 6))
     ax1 = plt.subplot(1, nsub, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
@@ -183,18 +182,30 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
         )
     plt.axis("off")
 
-    if nsub == 3:
+    if nsub == 3 or mc_data is not None:
         ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
-        plt.title("True sky", c="k", fontsize=17)
-        plt.imshow(
-            datahr,
-            cmap=cmap,
-            vmax=vmaxsr,
-            vmin=vminsr,
-            aspect="auto",
-            extent=[0, 1, 0, 1],
-        )
-        plt.axis("off")
+        if mc_data is None:
+            plt.title("True sky", c="k", fontsize=17)
+            plt.imshow(
+                datahr,
+                cmap=cmap,
+                vmax=vmaxsr,
+                vmin=vminsr,
+                aspect="auto",
+                extent=[0, 1, 0, 1],
+            )
+            plt.axis("off")
+        else:
+            plt.title("MC samples", c="k", fontsize=17)
+            plt.imshow(
+                mc_data,
+                cmap=cmap,
+                vmax=vmaxsr,
+                vmin=vminsr,
+                aspect="auto",
+                extent=[0, 1, 0, 1],
+            )
+            plt.axis("off")
 
     plt.tight_layout()
     plt.show()
@@ -215,7 +226,8 @@ def main_mc_dropout(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, 
     else:
         nsub = 2
     if plotit:
-        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image)
+        datasr = np.var(mc_data, axis=-1)
+        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=mc_data)
     return mc_data
 
 if __name__ == "__main__":
