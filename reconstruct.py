@@ -47,13 +47,14 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
             datalr = load_image(fn_img)
             if regular_image:
                 # find maximum and minimum values of datalr
-                print("datalr min", np.min(datalr))
-                print("datalr max", np.max(datalr))
-                print('scale', ((vmaxlr) / (np.max(datalr) - np.min(datalr))))
+                # scale to the range 0 - vmaxlr
+                # print("datalr min", np.min(datalr))
+                # print("datalr max", np.max(datalr))
+                # print('scale', ((vmaxlr) / (np.max(datalr) - np.min(datalr))))
                 datalr = datalr * ((vmaxlr) / (np.max(datalr) - np.min(datalr)))
-                print("datalr min", np.min(datalr))
-                print("datalr max", np.max(datalr))
-            print('datalr shape', datalr.shape)
+                # print("datalr min", np.min(datalr))
+                # print("datalr max", np.max(datalr))
+            # print('datalr shape', datalr.shape)
         except:
             return
 
