@@ -30,12 +30,14 @@ plt.rcParams.update(
 )
 
 
-def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16):
+def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False):
     if fn_img.endswith("npy"):
         datalr = np.load(fn_img)[:, :]
     elif fn_img.endswith("png"):
         try:
             datalr = load_image(fn_img)
+            if regular_image:
+                pass
             print('datalr shape', datalr.shape)
         except:
             return
@@ -129,7 +131,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.show()
 
 def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False):
-    datalr, datasr, datahr = reconstruct(fn_img, fn_model, scale, fnhr, nbit)
+    datalr, datasr, datahr = reconstruct(fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image)
     if datahr is not None:
         nsub = 3
     else:
