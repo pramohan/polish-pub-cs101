@@ -36,6 +36,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16):
     elif fn_img.endswith("png"):
         try:
             datalr = load_image(fn_img)
+            print('datalr shape', datalr.shape)
         except:
             return
 
