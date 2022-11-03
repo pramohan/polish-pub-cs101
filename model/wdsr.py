@@ -128,7 +128,7 @@ def wdsr2(
 
 
 def dropout_mc_wrapper(x, rate=0.15):
-    print('Dropout being used!')
+    # print('Dropout being used!')
     return tf.nn.dropout(x, rate)
 
 
