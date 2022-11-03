@@ -9,6 +9,14 @@ from utils import load_image, plot_sample
 from model.wdsr import wdsr_b
 import numpy as np
 
+
+vminlr = 0
+vmaxlr = 22500
+vminsr = 0
+vmaxsr = 22500
+vminhr = 0
+vmaxhr = 22500
+
 plt.rcParams.update(
     {
         "font.size": 12,
@@ -41,7 +49,9 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
                 # find maximum and minimum values of datalr
                 print("datalr min", np.min(datalr))
                 print("datalr max", np.max(datalr))
-                pass
+                datalr = datalr * (vmaxlr - vminlr) / (np.max(datalr) - np.min(datalr))
+                print("datalr min", np.min(datalr))
+                print("datalr max", np.max(datalr))
             print('datalr shape', datalr.shape)
         except:
             return
@@ -74,12 +84,6 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
-    vminlr = 0
-    vmaxlr = 22500
-    vminsr = 0
-    vmaxsr = 22500
-    vminhr = 0
-    vmaxhr = 22500
 
     if nsub == 2:
         fig = plt.figure(figsize=(10, 6))
