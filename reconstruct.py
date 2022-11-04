@@ -135,6 +135,8 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
         if len(datasr.shape) == 3:
             mc_data.append(np.squeeze(datasr))
     mc_data = np.stack(mc_data, axis=-1)
+    datasr = np.mean(mc_data, axis=-1)
+    datasr = datasr.reshape(datasr.shape[0], datasr.shape[1], 1)
     print("mc_data shape ", mc_data.shape)
     print(datasr.shape)
     return datalr, datasr, datahr, mc_data
@@ -173,7 +175,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
         plt.imshow(datasr.squeeze(), cmap="RdBu")
     else:
         print(datasr.shape)
-        if len(datasr.shape) == 4:
+        if len(datasr.shape) == 3:
             datasr = datasr.squeeze()
         plt.imshow(
             datasr,
