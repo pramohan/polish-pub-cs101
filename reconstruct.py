@@ -83,7 +83,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
 
 
 
-def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False):
+def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False, num_iter = 50):
     if fn_img.endswith("npy"):
         datalr = np.load(fn_img)[:, :]
     elif fn_img.endswith("png"):
@@ -128,7 +128,7 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     now = time.perf_counter()
 
     mc_data = []
-    for i in range(50):
+    for i in range(num_iter):
         print(f"Sample {i}, time {time.perf_counter() - now}")
         now = time.perf_counter()
         datasr = resolve_single(model, datalr, nbit=nbit).numpy()
