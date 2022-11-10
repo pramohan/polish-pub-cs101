@@ -70,7 +70,7 @@ def main(
     trainer = WdsrTrainer(
         model=wdsr_b_uq_model,
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
-        loss=laplacian_loss
+        loss=laplacian_loss()
     )
     print("Loaded in trainer")
 
