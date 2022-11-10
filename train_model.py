@@ -65,8 +65,7 @@ def main(
     )
     print("Model Shape:")
     wdsr_b_uq_model = wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan)
-    for layer in wdsr_b_uq_model.layers:
-        print(layer.output_shape)
+    print(wdsr_b_uq_model.summary())
 
     trainer = WdsrTrainer(
         model=wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
