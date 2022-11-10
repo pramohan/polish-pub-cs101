@@ -141,16 +141,17 @@ class Trainer:
         with tf.GradientTape() as tape:
             lr = tf.cast(lr, tf.float32)
             print('lr')
+            print(lr)
             print(lr[0][0][0])
-            print(lr[50][50][50])
+            print(lr[3][12][12])
 
             hr = tf.cast(hr, tf.float32)
             #            lr = tf.image.adjust_gamma(lr,0.9)
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
             print('sr')
-            with tf.Session() as sess:  print(sess.run(sr))
-            print(sr[50][50][50])
+            print(sr[0][0][0])
+            print(sr[3][12][12])
 
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
