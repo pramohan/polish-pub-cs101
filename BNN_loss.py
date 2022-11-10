@@ -2,6 +2,8 @@ import tensorflow.keras.backend as K
 
 
 def laplacian_loss(y_true, y_pred):
+    print(y_true.shape)
+    print(y_pred.shape)
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = y_pred[:, :, :, 1]
