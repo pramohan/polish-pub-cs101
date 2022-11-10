@@ -141,9 +141,7 @@ class Trainer:
         with tf.GradientTape() as tape:
             lr = tf.cast(lr, tf.float32)
             print('lr')
-            m = tf.keras.metrics.Sum()
-            m.update_state(lr)
-            print(m.result())
+            print(sum(lr))
 
 
             hr = tf.cast(hr, tf.float32)
@@ -151,9 +149,7 @@ class Trainer:
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
             print('sr')
-            m1 = tf.keras.metrics.Sum()
-            m1.update_state(sr)
-            print(m1.result())
+            print(sum(sr))
 
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
