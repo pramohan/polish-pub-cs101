@@ -91,7 +91,7 @@ def wdsr_b_uq(
     res_block_expansion=6,
     res_block_scaling=None,
     nchan=1,
-    output_chan = 2
+    output_chan = 1
 ):
     x_in = Input(shape=(None, None, nchan))
     x = Lambda(normalize)(x_in)
