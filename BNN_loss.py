@@ -15,13 +15,13 @@ def laplacian_loss(y_pred, y_true):
     print('means:')
     m = tf.keras.metrics.Sum()
     m.update_state(mean_true)
-    print(m.result().numpy())
+    print(m.result())
     m = tf.keras.metrics.Sum()
     m.update_state(mean_pred)
-    print(m.result().numpy())
+    print(m.result())
     m = tf.keras.metrics.Sum()
     m.update_state(scale_pred)
-    print(m.result().numpy())
+    print(m.result())
     loss = tf.math.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(scale_pred + 1e-7)
     return loss
 
