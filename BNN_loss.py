@@ -13,9 +13,9 @@ def laplacian_loss(y_pred, y_true):
     # print(mean_pred)
     # print(scale_pred)
     print('means:')
-    print(np.mean(mean_true.eval()))
-    print(np.mean(mean_pred.eval()))
-    print(  np.mean(scale_pred.eval()))
+    print(np.mean(mean_true.numpy()))
+    print(np.mean(mean_pred.numpy()))
+    print(  np.mean(scale_pred.numpy()))
     loss = tf.math.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(scale_pred + 1e-7)
     return loss
 
