@@ -5,7 +5,7 @@ import tensorflow as tf
 from optparse import OptionParser
 
 from data import RadioSky
-from model.wdsr import wdsr_b
+from model.wdsr import wdsr_b_uq
 from train import WdsrTrainer
 from BNN_loss import laplacian_loss
 
@@ -64,7 +64,7 @@ def main(
         f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
     trainer = WdsrTrainer(
-        model=wdsr_b(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
+        model=wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
         loss=laplacian_loss
     )
