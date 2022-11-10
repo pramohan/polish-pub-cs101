@@ -1,4 +1,4 @@
-import from tensorflow import keras.backend as K
+from tensorflow import keras.backend as K
 
 
 def laplacian_loss(y_true, y_pred):
