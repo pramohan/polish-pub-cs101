@@ -140,7 +140,7 @@ class Trainer:
     def train_step(self, lr, hr, gg=1.0):
         with tf.GradientTape() as tape:
             lr = tf.cast(lr, tf.float32)
-
+            print('lr')
             m = tf.keras.metrics.Sum()
             m.update_state(lr)
             print(m.result())
@@ -150,7 +150,7 @@ class Trainer:
             #            lr = tf.image.adjust_gamma(lr,0.9)
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
-
+            print('sr')
             m1 = tf.keras.metrics.Sum()
             m1.update_state(sr)
             print(m1.result())
