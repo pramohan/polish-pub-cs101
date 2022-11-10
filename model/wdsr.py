@@ -44,6 +44,46 @@ def wdsr_b(
     )
 
 
+
+def wdsr_b_2ch(
+    scale,
+    num_filters,
+    num_res_blocks,
+    res_block_expansion,
+    res_block_scaling,
+    nchan=1,
+):
+    x_in = Input(shape=(None, None, nchan))
+    x = Lambda(normalize)(x_in)
+
+    # main branch
+    #    m = conv2d_weightnorm(num_filters, 3, padding='same')(x)
+    m = conv2d_weightnorm(num_filters, nchan, padding="same")(x)
+    for i in range(num_res_blocks):
+        m = res_block_b(
+            m,
+            num_filters,
+            res_block_expansion,
+            kernel_size=3,
+            scaling=res_block_scaling,
+        )
+    m = conv2d_weightnorm(
+        nchan * scale**2, 3, padding="same", name=f"conv2d_main_scale_{scale}"
+    )(m)
+    m = Lambda(pixel_shuffle(scale))(m)
+
+    # skip branch
+    s = conv2d_weightnorm(
+        nchan * scale**2, 5, padding="same", name=f"conv2d_skip_scale_{scale}"
+    )(x)
+    s = Lambda(pixel_shuffle(scale))(s)
+
+    x = Add()([m, s])
+    x = Lambda(denormalize)(x)
+    x = tf.stack([x, x])
+    return Model(x_in, x, name="wdsr")
+
+
 def wdsr_b_uq(
     scale,
     num_filters=32,
