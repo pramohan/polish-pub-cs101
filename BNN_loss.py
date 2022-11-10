@@ -8,7 +8,7 @@ def laplacian_loss(y_pred, y_true):
     # print(y_pred.shape)
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
-    scale_pred = y_pred[:, :, :, 1]
+    scale_pred = K.abs(y_pred[:, :, :, 1])
     # print(mean_true)
     # print(mean_pred)
     # print(scale_pred)
