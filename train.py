@@ -156,6 +156,7 @@ class Trainer:
             # print(sr[0][0][0])
             # print(sr[3][12][12])
             tf.print(sr[3][12][12])
+            tf.print(hr[3][12][12])
 
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
