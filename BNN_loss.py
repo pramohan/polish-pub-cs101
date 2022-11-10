@@ -1,5 +1,6 @@
 import tensorflow.keras.backend as K
 import tensorflow as tf
+import numpy as np
 
 
 def laplacian_loss(y_pred, y_true):
@@ -11,9 +12,10 @@ def laplacian_loss(y_pred, y_true):
     # print(mean_true)
     # print(mean_pred)
     # print(scale_pred)
-    print(tf.math.reduce_mean(mean_true))
-    print(tf.math.reduce_mean(mean_pred))
-    print(  tf.math.reduce_mean(scale_pred))
+    print('means:')
+    print(np.mean(mean_true))
+    print(np.mean(mean_pred))
+    print(  np.mean(scale_pred))
     loss = tf.math.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(scale_pred + 1e-7)
     return loss
 
