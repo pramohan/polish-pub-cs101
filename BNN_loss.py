@@ -4,24 +4,24 @@ import numpy as np
 
 
 def laplacian_loss(y_pred, y_true):
-    print(y_true.shape)
-    print(y_pred.shape)
+    # print(y_true.shape)
+    # print(y_pred.shape)
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = y_pred[:, :, :, 1]
     # print(mean_true)
     # print(mean_pred)
     # print(scale_pred)
-    print('means:')
-    m = tf.keras.metrics.Sum()
-    m.update_state(mean_true)
-    print(m.result())
-    m = tf.keras.metrics.Sum()
-    m.update_state(mean_pred)
-    print(m.result())
-    m = tf.keras.metrics.Sum()
-    m.update_state(scale_pred)
-    print(m.result())
+    # print('means:')
+    # m = tf.keras.metrics.Sum()
+    # m.update_state(mean_true)
+    # print(m.result())
+    # m = tf.keras.metrics.Sum()
+    # m.update_state(mean_pred)
+    # print(m.result())
+    # m = tf.keras.metrics.Sum()
+    # m.update_state(scale_pred)
+    # print(m.result())
     loss = tf.math.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(scale_pred + 1e-7)
     return loss
 
