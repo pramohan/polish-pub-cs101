@@ -47,10 +47,10 @@ def wdsr_b(
 
 def wdsr_b_2ch(
     scale,
-    num_filters,
-    num_res_blocks,
-    res_block_expansion,
-    res_block_scaling,
+    num_filters=32,
+    num_res_blocks=8,
+    res_block_expansion=6,
+    res_block_scaling=None,
     nchan=1,
 ):
     x_in = Input(shape=(None, None, nchan))
