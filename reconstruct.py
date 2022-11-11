@@ -6,7 +6,7 @@ import matplotlib.pylab as plt
 import time
 from model import resolve_single
 from utils import load_image, plot_sample
-from model.wdsr import wdsr_b, wdsr_mc
+from model.wdsr import wdsr_b, wdsr_mc, wdsr_mc
 import numpy as np
 import tensorflow as tf
 
@@ -69,16 +69,16 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     else:
         datahr = None
 
-    model = wdsr_b(scale=scale, num_res_blocks=32)
+    model = wdsr_mc(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
+    print('datalrshape')
+    print(datalr.shape)
+    datalr = tf.stack([datalr, datalr], axis=3)
 
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:, :, :, 0]
-    print('datalrshape')
-    print(datalr.shape)
-    datalr = tf.stack([datalr, datalr], axis=3)
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
     return datalr, datasr, datahr
@@ -126,6 +126,9 @@ def reconstruct_mc(
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:, :, :, 0]
+    print('datalrshape')
+    print(datalr.shape)
+    datalr = tf.stack([datalr, datalr], axis=3)
     print("Iterating through MC samples")
     now = time.perf_counter()
 
