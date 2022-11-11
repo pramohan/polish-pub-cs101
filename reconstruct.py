@@ -170,6 +170,8 @@ def reconstruct_mc(
     print('datalrshape')
     print(datalr.shape)
     datalr = tf.stack([datalr, datalr], axis=2)
+    print('datalrshape')
+    print(datalr.shape)
     print("Iterating through MC samples")
     now = time.perf_counter()
 
