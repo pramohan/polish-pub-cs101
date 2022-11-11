@@ -114,7 +114,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     else:
         datahr = None
 
-    model = wdsr_b(scale=scale, num_res_blocks=32)
+    model = wdsr_b_uq(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
 
