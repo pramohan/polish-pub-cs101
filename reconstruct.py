@@ -8,7 +8,7 @@ from model import resolve_single
 from utils import load_image, plot_sample
 from model.wdsr import wdsr_b, wdsr_mc
 import numpy as np
-
+import tensorflow as tf
 
 vminlr = 0
 vmaxlr = 22500
@@ -76,6 +76,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:, :, :, 0]
+    datalr = tf.stack([datalr, datalr], axis=3)
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
     return datalr, datasr, datahr
