@@ -203,6 +203,9 @@ def plot_reconstruction(
         )
     plt.axis("off")
 
+    print(np.sum(datahr))
+    print(np.sum(mc_data))
+
 
     if nsub == 3 :
         ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
@@ -219,8 +222,8 @@ def plot_reconstruction(
 
 
     if mc_data is not None:
-        ax3 = plt.subplot(1, nsub, 4, sharex=ax1, sharey=ax1)
-        plt.title("MC samples", c="k", fontsize=17)
+        ax4 = plt.subplot(1, nsub, 4, sharex=ax1, sharey=ax1)
+        plt.title("Uncertainty", c="k", fontsize=17)
         plt.imshow(
             mc_data,
             cmap=cmap,
