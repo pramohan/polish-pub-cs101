@@ -44,7 +44,6 @@ def wdsr_b(
     )
 
 
-
 def wdsr_b_2ch(
     scale,
     num_filters=32,
@@ -91,7 +90,7 @@ def wdsr_b_uq(
     res_block_expansion=6,
     res_block_scaling=None,
     nchan=1,
-    output_chan = 2
+    output_chan=2,
 ):
     x_in = Input(shape=(None, None, output_chan))
     x = Lambda(normalize)(x_in)
@@ -123,10 +122,11 @@ def wdsr_b_uq(
 
     return Model(x_in, x, name="wdsr_b_uq")
 
+
 def wdsr_mc(
     scale,
     num_filters=32,
-    num_res_blocks=8, # 32 for wdsr-b
+    num_res_blocks=8,  # 32 for wdsr-b
     res_block_expansion=6,
     res_block_scaling=None,
     nchan=1,
@@ -164,7 +164,6 @@ def wdsr_mc(
     x = Lambda(denormalize)(x)
 
     return Model(x_in, x, name="wdsr")
-
 
 
 def wdsr2(

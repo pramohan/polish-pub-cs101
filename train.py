@@ -81,11 +81,8 @@ class Trainer:
             if step < 20:
                 loss_value = loss_mean.result()
                 duration = time.perf_counter() - self.now
-                print(
-                    f"{step}/{steps}: loss = {loss_value.numpy():.3f}"
-                )
+                print(f"{step}/{steps}: loss = {loss_value.numpy():.3f}")
                 self.now = time.perf_counter()
-
 
             elif step % evaluate_every == 0:
                 # print('a')

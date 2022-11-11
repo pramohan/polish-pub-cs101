@@ -72,18 +72,18 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     model = wdsr_b(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
-    
 
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
-        datalr = datalr[:,:,:,0]
+        datalr = datalr[:, :, :, 0]
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
     return datalr, datasr, datahr
 
 
-
-def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False, num_iter = 50):
+def reconstruct_mc(
+    fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False, num_iter=50
+):
     if fn_img.endswith("npy"):
         datalr = np.load(fn_img)[:, :]
     elif fn_img.endswith("png"):
@@ -112,19 +112,18 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
                 return
     else:
         datahr = None
-    print('Loaded image')
+    print("Loaded image")
 
     model = wdsr_mc(scale=scale, num_res_blocks=32)
-    print('made the model')
+    print("made the model")
     model.load_weights(fn_model)
-    print('loaded the weights')
+    print("loaded the weights")
     datalr = datalr[:, :, None]
-    
 
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
-        datalr = datalr[:,:,:,0]
-    print('Iterating through MC samples')
+        datalr = datalr[:, :, :, 0]
+    print("Iterating through MC samples")
     now = time.perf_counter()
 
     mc_data = []
@@ -142,7 +141,16 @@ def reconstruct_mc(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     return datalr, datasr, datahr, mc_data
 
 
-def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot",regular_image=False, mc_data=None):
+def plot_reconstruction(
+    datalr,
+    datasr,
+    datahr=None,
+    vm=1,
+    nsub=2,
+    cmap="afmhot",
+    regular_image=False,
+    mc_data=None,
+):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
@@ -215,25 +223,46 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     plt.tight_layout()
     plt.show()
 
-def main(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False):
-    datalr, datasr, datahr = reconstruct(fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image)
+
+def main(
+    fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False
+):
+    datalr, datasr, datahr = reconstruct(
+        fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image
+    )
     if datahr is not None:
         nsub = 3
     else:
         nsub = 2
     if plotit:
-        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image)
+        plot_reconstruction(
+            datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image
+        )
 
-def main_mc_dropout(fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False):
-    datalr, datasr, datahr, mc_data = reconstruct_mc(fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image)
+
+def main_mc_dropout(
+    fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False
+):
+    datalr, datasr, datahr, mc_data = reconstruct_mc(
+        fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image
+    )
     if datahr is not None:
         nsub = 3
     else:
         nsub = 2
     if plotit:
         mc_data = np.var(mc_data, axis=-1)
-        plot_reconstruction(datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=mc_data)
+        plot_reconstruction(
+            datalr,
+            datasr,
+            datahr=datahr,
+            vm=1,
+            nsub=nsub,
+            regular_image=regular_image,
+            mc_data=mc_data,
+        )
     return mc_data
+
 
 if __name__ == "__main__":
     # Example usage:

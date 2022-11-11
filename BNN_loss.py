@@ -4,19 +4,12 @@ import numpy as np
 
 
 def laplacian_loss(y_pred, y_true):
-    # print(y_true.shape)
-    # print(y_pred.shape)
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = K.abs(y_pred[:, :, :, 1]) + tf.convert_to_tensor(1e-7)
-    # print(mean_true)
-    # print(mean_pred)
-    # print(scale_pred)
-
-    # tf.print(scale_pred)
-    # tf.print(mean_pred)
-    # tf.print(mean_true)
-    loss = tf.math.divide(tf.math.square(K.abs(mean_true - mean_pred)), scale_pred) + K.log(scale_pred)
+    loss = tf.math.divide(
+        (K.abs(mean_true - mean_pred)), scale_pred
+    ) + K.log(scale_pred)
     return loss
 
 
@@ -36,7 +29,9 @@ def laplacian_loss_with_mask(y_true, y_pred):
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = y_pred[:, :, :, 1]
     mask = y_true[:, :, :, 1]
-    loss = K.tf.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(scale_pred + 1e-7)
+    loss = K.tf.divide(K.abs(mean_true - mean_pred), scale_pred + 1e-7) + K.log(
+        scale_pred + 1e-7
+    )
     loss = K.tf.multiply(loss, mask)
     return loss
 
