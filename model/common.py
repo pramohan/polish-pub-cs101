@@ -27,10 +27,10 @@ def resolve16(model, lr_batch, nbit=16):
     else:
         print("Wrong number of bits")
         raise Exception
-    lr_batch = tf.stack([lr_batch, lr_batch], axis=3)
-    lr_batch = tf.reshape(
-        lr_batch, [lr_batch.shape[0], lr_batch.shape[1], lr_batch.shape[2], 2]
-    )
+    # lr_batch = tf.stack([lr_batch, lr_batch], axis=3)
+    # lr_batch = tf.reshape(
+    #     lr_batch, [lr_batch.shape[0], lr_batch.shape[1], lr_batch.shape[2], 2]
+    # )
     # print('lrbatchshape')
     # print(lr_batch.shape)
     # print('yuh')
