@@ -296,10 +296,10 @@ def main(
 
 
 def main_mc_dropout(
-    fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False
+    fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False, num_iter=50
 ):
     datalr, datasr, datahr, mc_data = reconstruct_mc(
-        fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image
+        fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image, num_iter=num_iter
     )
     if datahr is not None:
         nsub = 3
