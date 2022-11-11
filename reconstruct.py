@@ -6,7 +6,7 @@ import matplotlib.pylab as plt
 import time
 from model import resolve_single
 from utils import load_image, plot_sample
-from model.wdsr import wdsr_b, wdsr_mc, wdsr_mc
+from model.wdsr import wdsr_b, wdsr_mc, wdsr_b_uq
 import numpy as np
 import tensorflow as tf
 
@@ -69,7 +69,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     else:
         datahr = None
 
-    model = wdsr_mc(scale=scale, num_res_blocks=32)
+    model = wdsr_b_uq(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
     print('datalrshape')
@@ -117,7 +117,7 @@ def reconstruct_mc(
         datahr = None
     print("Loaded image")
 
-    model = wdsr_mc(scale=scale, num_res_blocks=32)
+    model = wdsr_b_uq(scale=scale, num_res_blocks=32)
     print("made the model")
     model.load_weights(fn_model)
     print("loaded the weights")
