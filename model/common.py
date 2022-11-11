@@ -29,9 +29,9 @@ def resolve16(model, lr_batch, nbit=16):
         raise Exception
     print('lrbatchshape')
     print(lr_batch.shape)
-    lr_batch = tf.stack([lr_batch, lr_batch], axis=2)
+    lr_batch = tf.stack([lr_batch, lr_batch], axis=3)
     lr_batch = tf.reshape(
-        lr_batch, [lr_batch.shape[0], lr_batch.shape[1], 2]
+        lr_batch, [lr_batch.shape[0], lr_batch.shape[1],lr_batch.shape[2], 2]
     )
     # print('yuh')
     lr_batch = tf.cast(lr_batch, tf.float32)
