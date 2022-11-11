@@ -169,7 +169,7 @@ def reconstruct_mc(
         datalr = datalr[:, :, :, 0]
     print('datalrshape')
     print(datalr.shape)
-    datalr = tf.stack([datalr, datalr], axis=2)
+    datalr = tf.squeeze(tf.stack([datalr, datalr], axis=2))
     print('datalrshape')
     print(datalr.shape)
     print("Iterating through MC samples")
