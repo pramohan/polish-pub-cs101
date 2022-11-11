@@ -207,18 +207,18 @@ def plot_reconstruction(
     print(np.sum(mc_data))
 
 
-    if nsub == 3 :
-        ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
-        plt.title("True sky", c="k", fontsize=17)
-        plt.imshow(
-            datahr,
-            cmap=cmap,
-            vmax=vmaxsr,
-            vmin=vminsr,
-            aspect="auto",
-            extent=[0, 1, 0, 1],
-        )
-        plt.axis("off")
+
+    ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
+    plt.title("True sky", c="k", fontsize=17)
+    plt.imshow(
+        datahr,
+        cmap=cmap,
+        vmax=vmaxsr,
+        vmin=vminsr,
+        aspect="auto",
+        extent=[0, 1, 0, 1],
+    )
+    plt.axis("off")
 
 
     if mc_data is not None:
