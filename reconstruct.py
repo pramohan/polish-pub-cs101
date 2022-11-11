@@ -312,7 +312,7 @@ def main_mc_dropout(
             datasr,
             datahr=datahr,
             vm=1,
-            nsub=nsub,
+            nsub=4,
             regular_image=regular_image,
             mc_data=mc_data,
         )
