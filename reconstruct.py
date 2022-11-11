@@ -233,6 +233,7 @@ def plot_reconstruction(
         plt.axis("off")
 
     plt.tight_layout()
+    plt.colorbar()
     plt.show()
 
 
