@@ -39,7 +39,7 @@ plt.rcParams.update(
 )
 
 
-def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False):
+def reconstruct_uq(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False):
     if fn_img.endswith("npy"):
         datalr = np.load(fn_img)[:, :]
     elif fn_img.endswith("png"):
@@ -83,6 +83,47 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     datasr = datasr.numpy()
     return datalr, datasr, datahr
 
+
+def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False):
+    if fn_img.endswith("npy"):
+        datalr = np.load(fn_img)[:, :]
+    elif fn_img.endswith("png"):
+        try:
+            datalr = load_image(fn_img)
+            if regular_image:
+                # find maximum and minimum values of datalr
+                # scale to the range 0 - vmaxlr
+                # print("datalr min", np.min(datalr))
+                # print("datalr max", np.max(datalr))
+                # print('scale', ((vmaxlr) / (np.max(datalr) - np.min(datalr))))
+                datalr = datalr * ((vmaxlr) / (np.max(datalr) - np.min(datalr)))
+                # print("datalr min", np.min(datalr))
+                # print("datalr max", np.max(datalr))
+            # print('datalr shape', datalr.shape)
+        except:
+            return
+
+    if fnhr is not None:
+        if fnhr.endswith("npy"):
+            datalr = np.load(fnhr)[:, :]
+        elif fnhr.endswith("png"):
+            try:
+                datahr = load_image(fnhr)
+            except:
+                return
+    else:
+        datahr = None
+
+    model = wdsr_b(scale=scale, num_res_blocks=32)
+    model.load_weights(fn_model)
+    datalr = datalr[:, :, None]
+
+    if len(datalr.shape) == 4:
+        # datalr = datalr.squeeze()
+        datalr = datalr[:, :, :, 0]
+    datasr = resolve_single(model, datalr, nbit=nbit)
+    datasr = datasr.numpy()
+    return datalr, datasr, datahr
 
 def reconstruct_mc(
     fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False, num_iter=50
@@ -205,8 +246,6 @@ def plot_reconstruction(
 
     print(np.sum(datahr))
     print(np.sum(mc_data))
-
-
 
     ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
     plt.title("True sky", c="k", fontsize=17)
