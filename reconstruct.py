@@ -246,9 +246,10 @@ def main(
         nsub = 3
     else:
         nsub = 2
+    print(datalr.shape)
     if plotit:
         plot_reconstruction(
-            datalr[:,:,0], datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=datalr[:,:,1]
+            datalr, datasr[:,:,0], datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=datasr[:,:,1]
         )
 
 
