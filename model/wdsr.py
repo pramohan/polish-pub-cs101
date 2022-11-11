@@ -93,12 +93,12 @@ def wdsr_b_uq(
     nchan=1,
     output_chan = 2
 ):
-    x_in = Input(shape=(None, None, nchan))
+    x_in = Input(shape=(None, None, output_chan))
     x = Lambda(normalize)(x_in)
 
     # main branch
     #    m = conv2d_weightnorm(num_filters, 3, padding='same')(x)
-    m = conv2d_weightnorm(num_filters, nchan, padding="same")(x)
+    m = conv2d_weightnorm(num_filters, output_chan, padding="same")(x)
     for i in range(num_res_blocks):
         m = res_block_b(
             m,
