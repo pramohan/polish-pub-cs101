@@ -248,7 +248,7 @@ def main(
         nsub = 2
     if plotit:
         plot_reconstruction(
-            datalr[:,:,0], datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, uncertainty=datalr[:,:,1]
+            datalr[:,:,0], datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=datalr[:,:,1]
         )
 
 
