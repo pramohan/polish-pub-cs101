@@ -27,7 +27,7 @@ def resolve16(model, lr_batch, nbit=16):
     else:
         print("Wrong number of bits")
         raise Exception
-    lr_batch = tf.squeeze(tf.stack([lr_batch, lr_batch], axis=3))
+    lr_batch = tf.stack([lr_batch, lr_batch], axis=3)
     print('lrbatchshape')
     print(lr_batch.shape)
     # print('yuh')
