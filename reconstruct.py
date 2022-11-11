@@ -165,7 +165,6 @@ def plot_reconstruction(
         fig = plt.figure(figsize=(10, 6))
     if nsub == 3:
         fig = plt.figure(figsize=(13, 6))
-
     if mc_data is not None:
         fig = plt.figure(figsize=(16, 6))
     ax1 = plt.subplot(1, nsub, 1)
@@ -250,7 +249,7 @@ def main(
     print(datalr.shape)
     if plotit:
         plot_reconstruction(
-            datalr, datasr[:,:,0], datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, mc_data=datasr[:,:,1]
+            datalr, datasr[:,:,0], datahr=datahr, vm=1, nsub=4, regular_image=regular_image, mc_data=datasr[:,:,1]
         )
 
 
