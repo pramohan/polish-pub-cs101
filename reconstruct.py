@@ -155,7 +155,7 @@ def plot_reconstruction(
     nsub=2,
     cmap="afmhot",
     regular_image=False,
-    mc_data=None,
+    mc_data=None
 ):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
@@ -163,8 +163,11 @@ def plot_reconstruction(
 
     if nsub == 2:
         fig = plt.figure(figsize=(10, 6))
-    if nsub == 3 or mc_data is not None:
+    if nsub == 3:
         fig = plt.figure(figsize=(13, 6))
+
+    if mc_data is not None:
+        fig = plt.figure(figsize=(16, 6))
     ax1 = plt.subplot(1, nsub, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
     plt.axis("off")
@@ -201,30 +204,33 @@ def plot_reconstruction(
         )
     plt.axis("off")
 
-    if nsub == 3 or mc_data is not None:
+
+    if nsub == 3 :
         ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
-        if mc_data is None:
-            plt.title("True sky", c="k", fontsize=17)
-            plt.imshow(
-                datahr,
-                cmap=cmap,
-                vmax=vmaxsr,
-                vmin=vminsr,
-                aspect="auto",
-                extent=[0, 1, 0, 1],
-            )
-            plt.axis("off")
-        else:
-            plt.title("MC samples", c="k", fontsize=17)
-            plt.imshow(
-                mc_data,
-                cmap=cmap,
-                vmax=vmaxsr,
-                vmin=vminsr,
-                aspect="auto",
-                extent=[0, 1, 0, 1],
-            )
-            plt.axis("off")
+        plt.title("True sky", c="k", fontsize=17)
+        plt.imshow(
+            datahr,
+            cmap=cmap,
+            vmax=vmaxsr,
+            vmin=vminsr,
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
+        plt.axis("off")
+
+
+    if mc_data is not None:
+        ax3 = plt.subplot(1, nsub, 4, sharex=ax1, sharey=ax1)
+        plt.title("MC samples", c="k", fontsize=17)
+        plt.imshow(
+            mc_data,
+            cmap=cmap,
+            vmax=vmaxsr,
+            vmin=vminsr,
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
+        plt.axis("off")
 
     plt.tight_layout()
     plt.show()
@@ -242,7 +248,7 @@ def main(
         nsub = 2
     if plotit:
         plot_reconstruction(
-            datalr, datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image
+            datalr[:,:,0], datasr, datahr=datahr, vm=1, nsub=nsub, regular_image=regular_image, uncertainty=datalr[:,:,1]
         )
 
 
