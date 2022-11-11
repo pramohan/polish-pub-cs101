@@ -87,7 +87,7 @@ class Trainer:
                 self.now = time.perf_counter()
 
 
-            elif step % evaluate_every == 0:
+            if step % evaluate_every == 0 or step < 2:
                 # print('a')
                 loss_value = loss_mean.result()
                 # print('b')
