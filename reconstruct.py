@@ -76,6 +76,8 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:, :, :, 0]
+    print('datalrshape')
+    print(datalr.shape)
     datalr = tf.stack([datalr, datalr], axis=3)
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
