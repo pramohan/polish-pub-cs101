@@ -6,9 +6,18 @@ import numpy as np
 def laplacian_loss(y_pred, y_true):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
-    scale_pred = K.abs(y_pred[:, :, :, 1]) + tf.convert_to_tensor(1e-7)
+    scale_pred = K.exp(y_pred[:, :, :, 1])
     loss = tf.math.divide(
         (K.abs(mean_true - mean_pred)), scale_pred
+    ) + K.log(scale_pred)
+    return loss
+
+def gaussian_loss(y_pred, y_true):
+    mean_true = y_true[:, :, :, 0]
+    mean_pred = y_pred[:, :, :, 0]
+    scale_pred = K.exp(K.pow(y_pred[:, :, :, 1], 2))
+    loss = tf.math.divide(
+        (K.pow(mean_true - mean_pred, 2)), scale_pred
     ) + K.log(scale_pred)
     return loss
 
