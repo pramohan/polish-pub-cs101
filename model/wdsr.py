@@ -78,7 +78,8 @@ def wdsr_b_uq(
     s = Lambda(pixel_shuffle(scale))(s)
 
     x = Add()([m, s])
-    x = LeakyReLU(alpha=0.1)(x)
+    # x = LeakyReLU(alpha=0.1)(x)
+    x = tf.keras.activations.sigmoid(x)
     x = Lambda(denormalize)(x)
 
     return Model(x_in, x, name="wdsr_b_uq")
