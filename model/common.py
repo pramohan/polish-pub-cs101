@@ -49,7 +49,7 @@ def resolve16(model, lr_batch, nbit=16):
     return sr_batch
 
 
-def evaluate(model, dataset, nbit=8, return_batch = False):
+def evaluate(model, dataset, nbit=8, show_image = False):
     # print('fully stepped into evaluate')
     psnr_values = []
     for lr, hr in dataset:
@@ -59,10 +59,10 @@ def evaluate(model, dataset, nbit=8, return_batch = False):
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
-    if return_batch:
+    if show_image:
         return tf.reduce_mean(psnr_values), {'lr': lr, 'hr': hr, 'sr': sr}
     return tf.reduce_mean(psnr_values)
-        
+
 
 
 # ---------------------------------------
