@@ -108,7 +108,7 @@ class Trainer:
                 loss_value = loss_mean.result()
                 loss_mean.reset_states()
                 # Compute PSNR on validation dataset
-                psnr_value, example_img = self.evaluate(valid_dataset, nbit=nbit, show_image = True)
+                (psnr_value, example_img) = self.evaluate(valid_dataset, nbit=nbit, show_image = True)
                 with img_summary_writer.as_default():
                     tf.summary.image("Dirty Sky", example_img['lr'], step=step)
                     tf.summary.image("True Sky", example_img['hr'], step=step)

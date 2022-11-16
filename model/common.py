@@ -52,6 +52,7 @@ def resolve16(model, lr_batch, nbit=16):
 def evaluate(model, dataset, nbit=8, show_image = False):
     # print('fully stepped into evaluate')
     psnr_values = []
+    lr_output, hr_output, sr_output = [], [], []
     for lr, hr in dataset:
         sr = resolve16(model, lr, nbit=nbit)  # hack
         if lr.shape[-1] == 1:
@@ -59,8 +60,9 @@ def evaluate(model, dataset, nbit=8, show_image = False):
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
+        lr_output, hr_output, sr_output = lr, hr, sr
     if show_image:
-        return tf.reduce_mean(psnr_values), {'lr': lr, 'hr': hr, 'sr': sr}
+        return (tf.reduce_mean(psnr_values), {'lr': lr_output, 'hr': hr_output, 'sr': sr_output})
     return tf.reduce_mean(psnr_values)
 
 
