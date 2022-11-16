@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from scipy import signal
@@ -67,6 +68,12 @@ class Trainer:
         self.begin = time.perf_counter()
         print("Training begins @ %s" % self.now)
 
+        logdir = os.path.join("logs", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+        train_summary_writer = tf.summary.create_file_writer(logdir)
+        print("Writing logs to %s" % logdir)
+        tb_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+        tb_callback.set_model(self.model)
+
         for lr, hr in train_dataset.take(steps - ckpt.step.numpy()):
             ckpt.step.assign_add(1)
             step = ckpt.step.numpy()
@@ -84,15 +91,17 @@ class Trainer:
                 print(f"{step}/{steps}: loss = {loss_value.numpy():.3f}")
                 self.now = time.perf_counter()
 
+                with train_summary_writer.as_default():
+                    tf.summary.scalar('loss', loss_mean.result(), step=step)
+
             elif step % evaluate_every == 0:
-                # print('a')
+
+                with train_summary_writer.as_default():
+                    tf.summary.scalar('loss', loss_mean.result(), step=step)
                 loss_value = loss_mean.result()
-                # print('b')
                 loss_mean.reset_states()
-                # print('c')
                 # Compute PSNR on validation dataset
                 psnr_value = self.evaluate(valid_dataset, nbit=nbit)
-                # print('d')
                 duration = time.perf_counter() - self.now
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
@@ -102,11 +111,8 @@ class Trainer:
                     self.now = time.perf_counter()
                     # skip saving checkpoint, no PSNR improvement
                     continue
-                # print('E')
                 ckpt.psnr = psnr_value
-                # print('f')
                 ckpt_mgr.save()
-                # print('g')
 
                 self.now = time.perf_counter()
         print("Done training @ %s" % self.now)
@@ -137,24 +143,10 @@ class Trainer:
     def train_step(self, lr, hr, gg=1.0):
         with tf.GradientTape() as tape:
             lr = tf.cast(lr, tf.float32)
-            # print('lr')
-            # tf.print(lr)
-            # print(lr)
-            # print(lr[0][0][0])
-            # tf.print(lr[3][12][12])
-            # print(lr[3][12][12])
-
             hr = tf.cast(hr, tf.float32)
             #            lr = tf.image.adjust_gamma(lr,0.9)
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
-            # print('sr')
-            # tf.print(sr)
-            # print(sr[0][0][0])
-            # print(sr[3][12][12])
-            # tf.print(sr[3][12][12])
-            # tf.print(hr[3][12][12])
-
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
             loss_value = self.loss(sr, hr)
