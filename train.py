@@ -58,6 +58,7 @@ class Trainer:
         evaluate_every=1000,
         save_best_only=False,
         nbit=16,
+        fnoutweights=None,
     ):
         loss_mean = Mean()
 
@@ -67,10 +68,11 @@ class Trainer:
         self.now = time.perf_counter()
         self.begin = time.perf_counter()
         print("Training begins @ %s" % self.now)
-        startime = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        train_logdir = os.path.join("logs", "train", startime)
-        val_logdir = os.path.join("logs", "val", startime)
-        img_logdir = os.path.join("logs", "img", startime)
+        if fnoutweights is None:
+            fnoutweights = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        train_logdir = os.path.join("logs", "train", fnoutweights)
+        val_logdir = os.path.join("logs", "val", fnoutweights)
+        img_logdir = os.path.join("logs", "img", fnoutweights)
         train_summary_writer = tf.summary.create_file_writer(train_logdir)
         val_summary_writer = tf.summary.create_file_writer(val_logdir)
         img_summary_writer = tf.summary.create_file_writer(img_logdir)
