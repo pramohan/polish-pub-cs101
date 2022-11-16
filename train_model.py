@@ -87,6 +87,7 @@ def main(
         steps=train_steps,
         evaluate_every=1000,
         save_best_only=True,
+        fnoutweights=fnoutweights.strip(".h5"),
     )
 
     trainer.restore()
