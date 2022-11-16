@@ -236,9 +236,10 @@ class WdsrTrainer(Trainer):
         steps=300000,
         evaluate_every=1000,
         save_best_only=True,
+        fnoutweights=None,
     ):
         super().train(
-            train_dataset, valid_dataset, steps, evaluate_every, save_best_only
+            train_dataset, valid_dataset, steps, evaluate_every, save_best_only, fnoutweights=fnoutweights
         )
 
 
