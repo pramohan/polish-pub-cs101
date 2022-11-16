@@ -67,11 +67,15 @@ class Trainer:
         self.now = time.perf_counter()
         self.begin = time.perf_counter()
         print("Training begins @ %s" % self.now)
-
-        logdir = os.path.join("logs", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
-        train_summary_writer = tf.summary.create_file_writer(logdir)
-        print("Writing logs to %s" % logdir)
-        tb_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+        startime = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        train_logdir = os.path.join("logs", "train", startime)
+        val_logdir = os.path.join("logs", "val", startime)
+        img_logdir = os.path.join("logs", "img", startime)
+        train_summary_writer = tf.summary.create_file_writer(train_logdir)
+        val_summary_writer = tf.summary.create_file_writer(val_logdir)
+        img_summary_writer = tf.summary.create_file_writer(img_logdir)
+        print("Writing logs to %s" % train_logdir)
+        tb_callback = tf.keras.callbacks.TensorBoard(train_logdir, histogram_freq=1)
         tb_callback.set_model(self.model)
 
         for lr, hr in train_dataset.take(steps - ckpt.step.numpy()):
@@ -98,10 +102,17 @@ class Trainer:
 
                 with train_summary_writer.as_default():
                     tf.summary.scalar('loss', loss_mean.result(), step=step)
+
                 loss_value = loss_mean.result()
                 loss_mean.reset_states()
                 # Compute PSNR on validation dataset
-                psnr_value = self.evaluate(valid_dataset, nbit=nbit)
+                psnr_value, example_img = self.evaluate(valid_dataset, nbit=nbit, show_image = True)
+                with img_summary_writer.as_default():
+                    tf.summary.image("Dirty Sky", example_img['lr'], step=step)
+                    tf.summary.image("True Sky", example_img['hr'], step=step)
+                    tf.summary.image("Prediction", example_img['sr'], step=step)
+                with val_summary_writer.as_default():
+                    tf.summary.scalar('psnr', psnr_value, step=step)
                 duration = time.perf_counter() - self.now
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
@@ -158,9 +169,10 @@ class Trainer:
 
         return loss_value
 
-    def evaluate(self, dataset, nbit=16):
+    def evaluate(self, dataset, nbit=16, show_image = False):
         # print('step in evaluate')
-        return evaluate(self.checkpoint.model, dataset, nbit=nbit)
+        return evaluate(self.checkpoint.model, dataset, nbit=nbit
+                        , show_image = show_image)
 
     def restore(self):
         if self.checkpoint_manager.latest_checkpoint:

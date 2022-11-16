@@ -27,11 +27,11 @@ def resolve16(model, lr_batch, nbit=16):
     else:
         print("Wrong number of bits")
         raise Exception
-    print('lrbatchshape')
-    print(lr_batch.shape)
+    # print('lrbatchshape')
+    # print(lr_batch.shape)
     lr_batch = tf.stack([lr_batch, lr_batch], axis=3)
-    print('lrbatchshape')
-    print(lr_batch.shape)
+    # print('lrbatchshape')
+    # print(lr_batch.shape)
     lr_batch = tf.reshape(
         lr_batch, [lr_batch.shape[0], lr_batch.shape[1],lr_batch.shape[2], 2]
     )
@@ -49,7 +49,7 @@ def resolve16(model, lr_batch, nbit=16):
     return sr_batch
 
 
-def evaluate(model, dataset, nbit=8):
+def evaluate(model, dataset, nbit=8, return_batch = False):
     # print('fully stepped into evaluate')
     psnr_values = []
     for lr, hr in dataset:
@@ -59,7 +59,10 @@ def evaluate(model, dataset, nbit=8):
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
+    if return_batch:
+        return tf.reduce_mean(psnr_values), {'lr': lr, 'hr': hr, 'sr': sr}
     return tf.reduce_mean(psnr_values)
+        
 
 
 # ---------------------------------------
