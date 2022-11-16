@@ -7,9 +7,9 @@ def laplacian_loss(y_pred, y_true):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = (y_pred[:, :, :, 1]) + 1e-7
-    print('top_loss', K.tf.reduce_mean(K.abs(mean_true - mean_pred)))
-    print('bottom_loss', K.tf.reduce_mean(scale_pred))
-    print('coef_loss', K.tf.reduce_mean(K.log(scale_pred)))
+    print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
+    print('bottom_loss', tf.math.reduce_mean(scale_pred))
+    print('coef_loss', tf.math.reduce_mean(K.log(scale_pred)))
     loss = tf.math.divide(
         (K.abs(mean_true - mean_pred)), scale_pred
     ) + K.log(scale_pred)
