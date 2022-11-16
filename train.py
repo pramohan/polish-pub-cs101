@@ -189,7 +189,7 @@ class EdsrTrainer(Trainer):
         self,
         model,
         checkpoint_dir,
-        learning_rate=PiecewiseConstantDecay(boundaries=[200000], values=[1e-4, 5e-5]),
+        learning_rate=PiecewiseConstantDecay(boundaries=[50000,200000], values=[1e-3, 1e-4,5e-5]),
     ):
         super().__init__(
             model,
