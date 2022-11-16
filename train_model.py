@@ -162,7 +162,6 @@ if __name__ == "__main__":
         default=100,
     )
     parser.add_option(
-        "-b",
         "--batchsize",
         dest="batch size",
         default=32,
