@@ -1,6 +1,6 @@
 import tensorflow_addons as tfa
 
-from tensorflow.python.keras.layers import Add, Conv2D, Input, Lambda
+from tensorflow.python.keras.layers import Add, Conv2D, Input, Lambda, LeakyReLU
 from tensorflow.python.keras.models import Model
 
 from model.common import normalize, denormalize, pixel_shuffle
@@ -78,7 +78,7 @@ def wdsr_b_uq(
     s = Lambda(pixel_shuffle(scale))(s)
 
     x = Add()([m, s])
-    x = tf.keras.activations.sigmoid(x)
+    x = LeakyReLU(alpha=0.1)(x)
     x = Lambda(denormalize)(x)
 
     return Model(x_in, x, name="wdsr_b_uq")

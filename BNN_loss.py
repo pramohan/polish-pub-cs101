@@ -6,7 +6,7 @@ import numpy as np
 def laplacian_loss(y_pred, y_true):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
-    scale_pred = (y_pred[:, :, :, 1])
+    scale_pred = K.exp(y_pred[:, :, :, 1])
     loss = tf.math.divide(
         (K.abs(mean_true - mean_pred)), scale_pred
     ) + K.log(scale_pred)
