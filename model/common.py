@@ -52,7 +52,7 @@ def resolve16(model, lr_batch, nbit=16):
 def evaluate(model, dataset, nbit=8, show_image = False):
     # print('fully stepped into evaluate')
     psnr_values = []
-    lr_output, hr_output, sr_output = [], [], []
+    lr_output, hr_output, sr_output = None, None, None
     for lr, hr in dataset:
         sr = resolve16(model, lr, nbit=nbit)  # hack
         if lr.shape[-1] == 1:

@@ -112,9 +112,9 @@ class Trainer:
                 tf.print(example_img)
                 tf.print(example_img['lr'])
                 with img_summary_writer.as_default():
-                    tf.summary.image("Dirty Sky", example_img['lr'], step=step)
-                    tf.summary.image("True Sky", example_img['hr'], step=step)
-                    tf.summary.image("Prediction", example_img['sr'], step=step)
+                    tf.summary.image("Dirty Sky", tf.dtypes.cast(example_img['lr'], dtype=tf.float32), step=step)
+                    tf.summary.image("True Sky", tf.dtypes.cast(example_img['hr'], dtype=tf.float32), step=step)
+                    tf.summary.image("Prediction", tf.dtypes.cast(example_img['sr'], dtype=tf.float32), step=step)
                 with val_summary_writer.as_default():
                     tf.summary.scalar('psnr', psnr_value, step=step)
                 duration = time.perf_counter() - self.now
