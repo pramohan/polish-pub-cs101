@@ -20,7 +20,7 @@ def main(
     nchan=1,
     nbit=16,
     num_res_blocks=32,
-    batchsize=4,
+    batchsize=32,
     train_steps=10000,
 ):
 
@@ -161,6 +161,13 @@ if __name__ == "__main__":
         help="number of validation images",
         default=100,
     )
+    parser.add_option(
+        "-b",
+        "--batchsize",
+        dest="batch size",
+        default=32,
+        help="batch size for training",
+    )
 
     options, args = parser.parse_args()
     images_dir = args[0]
@@ -184,4 +191,5 @@ if __name__ == "__main__":
         nbit=options.nbit,
         num_res_blocks=options.num_res_blocks,
         train_steps=options.train_steps,
+        batchsize=options.batchsize,
     )
