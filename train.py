@@ -100,7 +100,7 @@ class Trainer:
                 with train_summary_writer.as_default():
                     tf.summary.scalar('loss', loss_mean.result(), step=step)
 
-            elif step % evaluate_every == 0:
+            if step % evaluate_every == 0 or step == 2:
 
                 with train_summary_writer.as_default():
                     tf.summary.scalar('loss', loss_mean.result(), step=step)
