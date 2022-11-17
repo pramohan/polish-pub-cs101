@@ -166,6 +166,10 @@ class Trainer:
             #            hr_ = hr - tf.reduce_min(hr)
             loss_value = self.loss(sr, hr)
 
+        tf.print(lr.shape)
+        tf.print(sr.shape)
+        tf.print(hr.shape)
+
         gradients = tape.gradient(loss_value, self.checkpoint.model.trainable_variables)
         self.checkpoint.optimizer.apply_gradients(
             zip(gradients, self.checkpoint.model.trainable_variables)
