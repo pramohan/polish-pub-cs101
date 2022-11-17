@@ -54,7 +54,8 @@ def evaluate(model, dataset, nbit=8, show_image=False):
     # print('fully stepped into evaluate')
     psnr_values = []
     lr_output, hr_output, sr_output, uq_output = None, None, None, None
-    stacked = tf.stack([lr for lr, hr in dataset])
+    stacked = tf.stack([lr for lr, hr in dataset], axis=1)
+    stacked = stacked.reshape([stacked.shape[1], stacked.shape[2], stacked.shape[3], stacked.shape[3]])
     tf.print('stacked shape', stacked.shape)
     output = resolve16(model, stacked, nbit=nbit)
     tf.print('output shape is', output.shape)
