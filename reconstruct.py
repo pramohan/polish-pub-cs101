@@ -74,7 +74,7 @@ def reconstruct_uq(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     datalr = datalr[:, :, None]
     print('datalrshape')
     print(datalr.shape)
-    datalr = tf.stack([datalr, datalr], axis=3)
+    # datalr = tf.stack([datalr, datalr], axis=3)
 
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
@@ -167,11 +167,11 @@ def reconstruct_mc(
     if len(datalr.shape) == 4:
         # datalr = datalr.squeeze()
         datalr = datalr[:, :, :, 0]
-    print('datalrshape')
-    print(datalr.shape)
-    datalr = tf.squeeze(tf.stack([datalr, datalr], axis=2))
-    print('datalrshape')
-    print(datalr.shape)
+    # print('datalrshape')
+    # print(datalr.shape)
+    # datalr = tf.squeeze(tf.stack([datalr, datalr], axis=2))
+    # print('datalrshape')
+    # print(datalr.shape)
     print("Iterating through MC samples")
     now = time.perf_counter()
 

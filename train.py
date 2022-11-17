@@ -87,7 +87,7 @@ class Trainer:
 
             #            lr = tf.image.adjust_gamma(lr, 0.5)
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
-            loss = self.train_step(tf.squeeze(tf.stack([lr, lr], axis=3)), hr)
+            loss = self.train_step(lr, hr)
             # print('wtf loss', loss)
             loss_mean(loss)
 
@@ -109,8 +109,8 @@ class Trainer:
                 loss_mean.reset_states()
                 # Compute PSNR on validation dataset
                 (psnr_value, example_img) = self.evaluate(valid_dataset, nbit=nbit, show_image = True)
-                tf.print(example_img)
-                tf.print(example_img['lr'])
+                # tf.print(example_img)
+                # tf.print(example_img['lr'])
                 with img_summary_writer.as_default():
                     tf.summary.image("Dirty Sky", tf.dtypes.cast(example_img['lr'], dtype=tf.float32), step=step)
                     tf.summary.image("True Sky", tf.dtypes.cast(example_img['hr'], dtype=tf.float32), step=step)
