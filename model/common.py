@@ -69,7 +69,7 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         # tf.print('lr_shape', lr.shape)
         # tf.print('sr shape___eval2', sr.shape)
         #        psnr_value = psnr16(hr, sr)[0]
-        psnr_value = psnr(hr, sr, nbit=nbit)[0]
+        psnr_value = psnr(hr, sr * (2**nbit), nbit=nbit)[0]
         # tf.print('psnr_value', psnr_value)
         psnr_values.append(psnr_value)
         lr_output, hr_output, sr_output, uq_output = lr, hr, sr, uq

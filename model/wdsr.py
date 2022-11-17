@@ -81,7 +81,7 @@ def wdsr_b_uq(
     x = Add()([m, s])
     # x = ReLU()(x)
     # x = tf.keras.activations.sigmoid(x)
-    x = Lambda(denormalize)(x)
+    # x = Lambda(denormalize)(x)
 
     return Model(x_in, x, name="wdsr_b_uq")
 

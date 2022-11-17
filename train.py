@@ -132,8 +132,8 @@ class Trainer:
                 uq = example_img["uq"]
                 uq = tf.reshape(uq, (uq.shape[1], uq.shape[2]))
                 plot_reconstruction(
-                    lr, sr, hr,
-                    mc_data=uq,
+                    lr, (sr * 2 ** nbit), hr,
+                    mc_data=(uq * 2 ** nbit),
                     vm=1,
                     nsub=4,
                     regular_image=False,
