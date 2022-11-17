@@ -216,7 +216,7 @@ def plot_reconstruction(
     plt.axis("off")
     if regular_image:
         print("datalr shape", datalr.shape)
-        plt.imshow(datalr.squeeze(), cmap="RdBu")
+        plt.imshow(tf.squeeze(datalr), cmap="RdBu")
     else:
         plt.imshow(
             datalr[..., 0],
@@ -232,13 +232,10 @@ def plot_reconstruction(
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
     if regular_image:
         print("datasr shape", datasr.shape)
-        plt.imshow(datasr.squeeze(), cmap="RdBu")
+        plt.imshow(tf.squeeze(datasr), cmap="RdBu")
     else:
-        # print(datasr.shape)
-        # if len(datasr.shape) == 3:
-        #     datasr = datasr.squeeze()
         plt.imshow(
-            datasr,
+            tf.squeeze(datasr),
             cmap=cmap,
             vmax=vmaxsr,
             vmin=vminsr,
@@ -253,7 +250,7 @@ def plot_reconstruction(
     ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
     plt.title("True sky", c="k", fontsize=17)
     plt.imshow(
-        datahr,
+        tf.squeeze(datahr),
         cmap=cmap,
         vmax=vmaxsr,
         vmin=vminsr,
@@ -266,7 +263,7 @@ def plot_reconstruction(
         ax4 = plt.subplot(1, nsub, 4, sharex=ax1, sharey=ax1)
         plt.title("Uncertainty", c="k", fontsize=17)
         plt.imshow(
-            mc_data,
+            tf.squeeze(mc_data),
             cmap=cmap,
             vmax=vmaxsr,
             vmin=vminsr,
