@@ -116,6 +116,8 @@ class Trainer:
                 # tf.print(example_img)
                 # tf.print(example_img['lr'])
                 pred = tf.squeeze(example_img["sr"])
+                tf.print(example_img["sr"])
+                tf.print(pred.shape)
                 plot_reconstruction(
                     tf.squeeze(example_img["lr"]),
                     pred[:, :, 0],
