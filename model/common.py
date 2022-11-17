@@ -53,15 +53,15 @@ def resolve16(model, lr_batch, nbit=16):
 def evaluate(model, dataset, nbit=8, show_image=False):
     # print('fully stepped into evaluate')
     psnr_values = []
-    lr_output, hr_output, sr_output = None, None, None
+    lr_output, hr_output, sr_output, uq_output = None, None, None, None
     for lr, hr in dataset:
         output  = resolve16(model, lr, nbit=nbit)  # hack
-        sr = output[:,:,:,0]
-        uq = output[:,:,:,1]
-        tf.print('sr shape___eval', sr.shape)
+        sr = output[:,:,:,0, None]
+        uq = output[:,:,:,1, None]
+        # tf.print('sr shape___eval', sr.shape)
         # if lr.shape[-1] == 1:
         #     sr = tf.reshape(sr, (sr.shape[0], sr.shape[1], sr.shape[2]))
-        tf.print('lr_shape', lr.shape)
+        # tf.print('lr_shape', lr.shape)
         tf.print('sr shape___eval2', sr.shape)
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
