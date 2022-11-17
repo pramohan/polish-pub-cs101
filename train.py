@@ -16,6 +16,8 @@ from tensorflow.keras.metrics import Mean
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
 
+from reconstruct import plot_reconstruction
+
 
 class Trainer:
     def __init__(
@@ -98,25 +100,32 @@ class Trainer:
                 self.now = time.perf_counter()
 
                 with train_summary_writer.as_default():
-                    tf.summary.scalar('loss', loss_mean.result(), step=step)
+                    tf.summary.scalar("loss", loss_mean.result(), step=step)
 
             if step % evaluate_every == 0 or step == 2:
 
                 with train_summary_writer.as_default():
-                    tf.summary.scalar('loss', loss_mean.result(), step=step)
+                    tf.summary.scalar("loss", loss_mean.result(), step=step)
 
                 loss_value = loss_mean.result()
                 loss_mean.reset_states()
                 # Compute PSNR on validation dataset
-                (psnr_value, example_img) = self.evaluate(valid_dataset, nbit=nbit, show_image = True)
+                (psnr_value, example_img) = self.evaluate(
+                    valid_dataset, nbit=nbit, show_image=True
+                )
                 # tf.print(example_img)
                 # tf.print(example_img['lr'])
-                with img_summary_writer.as_default():
-                    tf.summary.image("Dirty Sky", tf.dtypes.cast(example_img['lr'], dtype=tf.float32), step=step)
-                    tf.summary.image("True Sky", tf.dtypes.cast(example_img['hr'], dtype=tf.float32), step=step)
-                    tf.summary.image("Prediction", tf.dtypes.cast(example_img['sr'], dtype=tf.float32), step=step)
+                plot_reconstruction(
+                    example_img["lr"],
+                    example_img["sr"][:, :, :, 0],
+                    example_img["hr"],
+                    mc_data=example_img["sr"][:, :, :, 1],
+                    vm=1,
+                    nsub=4,
+                    regular_image=False,
+                )
                 with val_summary_writer.as_default():
-                    tf.summary.scalar('psnr', psnr_value, step=step)
+                    tf.summary.scalar("psnr", psnr_value, step=step)
                 duration = time.perf_counter() - self.now
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
@@ -166,10 +175,6 @@ class Trainer:
             #            hr_ = hr - tf.reduce_min(hr)
             loss_value = self.loss(sr, hr)
 
-        tf.print(lr.shape)
-        tf.print(sr.shape)
-        tf.print(hr.shape)
-
         gradients = tape.gradient(loss_value, self.checkpoint.model.trainable_variables)
         self.checkpoint.optimizer.apply_gradients(
             zip(gradients, self.checkpoint.model.trainable_variables)
@@ -177,10 +182,11 @@ class Trainer:
 
         return loss_value
 
-    def evaluate(self, dataset, nbit=16, show_image = False):
+    def evaluate(self, dataset, nbit=16, show_image=False):
         # print('step in evaluate')
-        return evaluate(self.checkpoint.model, dataset, nbit=nbit
-                        , show_image = show_image)
+        return evaluate(
+            self.checkpoint.model, dataset, nbit=nbit, show_image=show_image
+        )
 
     def restore(self):
         if self.checkpoint_manager.latest_checkpoint:
@@ -195,7 +201,9 @@ class EdsrTrainer(Trainer):
         self,
         model,
         checkpoint_dir,
-        learning_rate=PiecewiseConstantDecay(boundaries=[50000,200000], values=[1e-4, 1e-5,5e-6]),
+        learning_rate=PiecewiseConstantDecay(
+            boundaries=[50000, 200000], values=[1e-4, 1e-5, 5e-6]
+        ),
     ):
         super().__init__(
             model,
@@ -245,7 +253,12 @@ class WdsrTrainer(Trainer):
         fnoutweights=None,
     ):
         super().train(
-            train_dataset, valid_dataset, steps, evaluate_every, save_best_only, fnoutweights=fnoutweights
+            train_dataset,
+            valid_dataset,
+            steps,
+            evaluate_every,
+            save_best_only,
+            fnoutweights=fnoutweights,
         )
 
 

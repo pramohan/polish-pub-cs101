@@ -72,7 +72,7 @@ def reconstruct_uq(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=Fa
     model = wdsr_b_uq(scale=scale, num_res_blocks=32)
     model.load_weights(fn_model)
     datalr = datalr[:, :, None]
-    print('datalrshape')
+    print("datalrshape")
     print(datalr.shape)
     # datalr = tf.stack([datalr, datalr], axis=3)
 
@@ -124,6 +124,7 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
     return datalr, datasr, datahr
+
 
 def reconstruct_mc(
     fn_img, fn_model, scale, fnhr=None, nbit=16, regular_image=False, num_iter=50
@@ -198,7 +199,7 @@ def plot_reconstruction(
     nsub=2,
     cmap="afmhot",
     regular_image=False,
-    mc_data=None
+    mc_data=None,
 ):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
@@ -261,7 +262,6 @@ def plot_reconstruction(
     )
     plt.axis("off")
 
-
     if mc_data is not None:
         ax4 = plt.subplot(1, nsub, 4, sharex=ax1, sharey=ax1)
         plt.title("Uncertainty", c="k", fontsize=17)
@@ -293,15 +293,34 @@ def main(
     print(datalr.shape)
     if plotit:
         plot_reconstruction(
-            datalr, datasr[:,:,0], datahr=datahr, vm=1, nsub=4, regular_image=regular_image, mc_data=datasr[:,:,1]
+            datalr,
+            datasr[:, :, 0],
+            datahr=datahr,
+            vm=1,
+            nsub=4,
+            regular_image=regular_image,
+            mc_data=datasr[:, :, 1],
         )
 
 
 def main_mc_dropout(
-    fn_img, fn_model, scale=4, fnhr=None, nbit=16, plotit=True, regular_image=False, num_iter=50
+    fn_img,
+    fn_model,
+    scale=4,
+    fnhr=None,
+    nbit=16,
+    plotit=True,
+    regular_image=False,
+    num_iter=50,
 ):
     datalr, datasr, datahr, mc_data = reconstruct_mc(
-        fn_img, fn_model, scale, fnhr, nbit, regular_image=regular_image, num_iter=num_iter
+        fn_img,
+        fn_model,
+        scale,
+        fnhr,
+        nbit,
+        regular_image=regular_image,
+        num_iter=num_iter,
     )
     if datahr is not None:
         nsub = 3

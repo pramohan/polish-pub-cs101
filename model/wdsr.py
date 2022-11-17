@@ -43,6 +43,7 @@ def wdsr_b(
         nchan,
     )
 
+
 def wdsr_b_uq(
     scale,
     num_filters=32,
