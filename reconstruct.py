@@ -234,9 +234,9 @@ def plot_reconstruction(
         print("datasr shape", datasr.shape)
         plt.imshow(datasr.squeeze(), cmap="RdBu")
     else:
-        print(datasr.shape)
-        if len(datasr.shape) == 3:
-            datasr = datasr.squeeze()
+        # print(datasr.shape)
+        # if len(datasr.shape) == 3:
+        #     datasr = datasr.squeeze()
         plt.imshow(
             datasr,
             cmap=cmap,
@@ -247,8 +247,8 @@ def plot_reconstruction(
         )
     plt.axis("off")
 
-    print(np.sum(datahr))
-    print(np.sum(mc_data))
+    # print(np.sum(datahr))
+    # print(np.sum(mc_data))
 
     ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
     plt.title("True sky", c="k", fontsize=17)
