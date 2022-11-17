@@ -174,6 +174,7 @@ class Trainer:
             #            lr = tf.image.adjust_gamma(lr,0.9)
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
+            tf.print('sr_shape during trainnig', sr.shape)
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
             loss_value = self.loss(sr, hr)
