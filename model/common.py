@@ -56,6 +56,7 @@ def evaluate(model, dataset, nbit=8, show_image=False):
     lr_output, hr_output, sr_output = None, None, None
     for lr, hr in dataset:
         sr = resolve16(model, lr, nbit=nbit)  # hack
+        tf.print('sr shape___eval', sr.shape)
         if lr.shape[-1] == 1:
             sr = sr[..., 0, None]
         #        psnr_value = psnr16(hr, sr)[0]
