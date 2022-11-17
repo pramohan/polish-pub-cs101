@@ -90,7 +90,7 @@ class Trainer:
             #            lr = tf.image.adjust_gamma(lr, 0.5)
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
             loss = -1
-            if step % evaluate_every == 0 or step == 2:
+            if step % evaluate_every == 0 or step <= 20:
                 loss = self.train_step(lr, hr, show_parts=True)
             else:
                 loss = self.train_step(lr, hr)
