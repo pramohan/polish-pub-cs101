@@ -14,7 +14,7 @@ from tensorflow.keras.losses import MeanAbsoluteError
 from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.metrics import Mean
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
+from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay, ExponentialDecay
 
 from reconstruct import plot_reconstruction
 
@@ -245,7 +245,8 @@ class WdsrTrainer(Trainer):
         self,
         model,
         checkpoint_dir,
-        learning_rate=PiecewiseConstantDecay(boundaries=[200000], values=[1e-3, 5e-4]),
+        # learning_rate=PiecewiseConstantDecay(boundaries=[200000], values=[1e-3, 5e-4]),
+        learning_rate=ExponentialDecay(1e-3, decay_steps=10000, decay_rate=0.5),
         nbit=16,
         fn_kernel=None,
         loss=MeanAbsoluteError(),
