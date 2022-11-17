@@ -19,9 +19,9 @@ def laplacian_loss(y_pred, y_true, show_parts = False):
     return loss
 
 def gaussian_loss(y_pred, y_true, show_parts = False):
-    mean_true = y_true[:, :, :, 0]
+    mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     # mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
-    mean_pred = tf.math.scalar_mul(2**16, y_pred[:, :, :, 0])
+    mean_pred = y_pred[:, :, :, 0]
     # scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16)
     scale_pred = y_pred[:, :, :, 1]
     if show_parts:
