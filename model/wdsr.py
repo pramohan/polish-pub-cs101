@@ -79,7 +79,7 @@ def wdsr_b_uq(
     s = Lambda(pixel_shuffle(scale))(s)
 
     x = Add()([m, s])
-    x = ReLU()(x)
+    # x = ReLU()(x)
     # x = tf.keras.activations.sigmoid(x)
     x = Lambda(denormalize)(x)
 
