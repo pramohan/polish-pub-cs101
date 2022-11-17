@@ -117,9 +117,9 @@ class Trainer:
                 # tf.print(example_img['lr'])
                 plot_reconstruction(
                     example_img["lr"],
-                    example_img["sr"][:, :, :, 0],
+                    example_img["sr"][:, :, 0],
                     example_img["hr"],
-                    mc_data=example_img["sr"][:, :, :, 1],
+                    mc_data=example_img["sr"][:, :, 1],
                     vm=1,
                     nsub=4,
                     regular_image=False,
