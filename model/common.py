@@ -59,6 +59,8 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         tf.print('sr shape___eval', sr.shape)
         if lr.shape[-1] == 1:
             sr = sr[..., 0, None]
+        tf.print('lr_shape', lr.shape)
+        tf.print('sr shape___eval2', sr.shape)
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
