@@ -20,7 +20,7 @@ def main(
     nchan=1,
     nbit=16,
     num_res_blocks=32,
-    batchsize=32,
+    batchsize=16,
     train_steps=10000,
 ):
 
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     parser.add_option(
         "--batchsize",
         dest="batchsize",
-        default=32,
+        default=16,
         help="batch size for training",
     )
 
