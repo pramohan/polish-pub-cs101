@@ -28,7 +28,7 @@ def gaussian_loss(y_pred, y_true, show_parts = False):
         tf.print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
         tf.print('bottom_loss', tf.math.reduce_mean(scale_pred))
         tf.print('coef_loss', (tf.math.reduce_mean(scale_pred) / 2))
-    loss = tf.math.divide((K.pow(mean_true - mean_pred, 2)), 2 * K.exp(-1 * scale_pred)) + (tf.divide(scale_pred, 2))
+    loss = tf.math.divide((K.pow(mean_true - mean_pred, 2)), 2 * K.exp(scale_pred)) + (tf.divide(scale_pred, 2))
     return loss
 
 
