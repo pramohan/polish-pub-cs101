@@ -54,6 +54,10 @@ def evaluate(model, dataset, nbit=8, show_image=False):
     # print('fully stepped into evaluate')
     psnr_values = []
     lr_output, hr_output, sr_output, uq_output = None, None, None, None
+    stacked = tf.stack([lr for lr, hr in dataset])
+    tf.print('stacked shape', stacked.shape)
+    output = resolve16(model, stacked, nbit=nbit)
+    tf.print('output shape is', output.shape)
     for lr, hr in dataset:
         output  = resolve16(model, lr, nbit=nbit)  # hack
         sr = output[:,:,:,0, None]
