@@ -39,6 +39,7 @@ def resolve16(model, lr_batch, nbit=16):
     lr_batch = tf.cast(lr_batch, tf.float32)
     # print('aaa')
     sr_batch = model(lr_batch)
+    tf.print('sr_batch shape', sr_batch.shape)
     # print('aab')
     sr_batch = tf.clip_by_value(sr_batch, 0, 2**nbit - 1)
     # print('aac')
