@@ -120,10 +120,10 @@ class Trainer:
                 tf.print(   'sr shape', example_img['sr'].shape)
                 tf.print('uq shape', example_img['uq'].shape)
                 plot_reconstruction(
-                    tf.squeeze(example_img["lr"]),
-                    tf.squeeze(example_img["sr"]),
-                    tf.squeeze(example_img["hr"]),
-                    mc_data=tf.squeeze(example_img["uq"]),
+                    (example_img["lr"]),
+                    (example_img["sr"]),
+                    (example_img["hr"]),
+                    mc_data=(example_img["uq"]),
                     vm=1,
                     nsub=4,
                     regular_image=False,
