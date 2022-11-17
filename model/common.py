@@ -39,7 +39,7 @@ def resolve16(model, lr_batch, nbit=16):
     lr_batch = tf.cast(lr_batch, tf.float32)
     # print('aaa')
     sr_batch = model(lr_batch)
-    tf.print('sr_batch shape', sr_batch.shape)
+    # tf.print('sr_batch shape', sr_batch.shape)
     # print('aab')
     sr_batch = tf.clip_by_value(sr_batch, 0, 2**nbit - 1)
     # print('aac')
@@ -67,10 +67,10 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         # if lr.shape[-1] == 1:
         #     sr = tf.reshape(sr, (sr.shape[0], sr.shape[1], sr.shape[2]))
         # tf.print('lr_shape', lr.shape)
-        tf.print('sr shape___eval2', sr.shape)
+        # tf.print('sr shape___eval2', sr.shape)
         #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
-        tf.print('psnr_value', psnr_value)
+        # tf.print('psnr_value', psnr_value)
         psnr_values.append(psnr_value)
         lr_output, hr_output, sr_output, uq_output = lr, hr, sr, uq
     if show_image:

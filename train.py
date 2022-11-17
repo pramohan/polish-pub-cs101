@@ -115,10 +115,10 @@ class Trainer:
                 )
                 # tf.print(example_img)
                 # tf.print(example_img['lr'])
-                tf.print('lr shape', example_img['lr'].shape)
-                tf.print('hr shape', example_img['hr'].shape)
-                tf.print(   'sr shape', example_img['sr'].shape)
-                tf.print('uq shape', example_img['uq'].shape)
+                # tf.print('lr shape', example_img['lr'].shape)
+                # tf.print('hr shape', example_img['hr'].shape)
+                # tf.print(   'sr shape', example_img['sr'].shape)
+                # tf.print('uq shape', example_img['uq'].shape)
                 lr = example_img["lr"]
                 lr = tf.reshape(lr, (lr.shape[1], lr.shape[2], 1))
                 hr = example_img["hr"]
@@ -181,7 +181,7 @@ class Trainer:
             #            lr = tf.image.adjust_gamma(lr,0.9)
             #            hr = tf.image.adjust_gamma(hr,0.9)
             sr = self.checkpoint.model(lr, training=True)
-            tf.print('sr_shape during trainnig', sr.shape)
+            # tf.print('sr_shape during trainnig', sr.shape)
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
             loss_value = self.loss(sr, hr)
