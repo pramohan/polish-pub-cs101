@@ -115,11 +115,12 @@ class Trainer:
                 )
                 # tf.print(example_img)
                 # tf.print(example_img['lr'])
+                pred = tf.squeeze(example_img["sr"])
                 plot_reconstruction(
-                    example_img["lr"],
-                    example_img["sr"][:, :, 0],
-                    example_img["hr"],
-                    mc_data=example_img["sr"][:, :, 1],
+                    tf.squeeze(example_img["lr"]),
+                    pred[:, :, 0],
+                    tf.squeeze(example_img["hr"]),
+                    mc_data=pred[:, :, 1],
                     vm=1,
                     nsub=4,
                     regular_image=False,
