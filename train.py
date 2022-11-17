@@ -119,11 +119,17 @@ class Trainer:
                 tf.print('hr shape', example_img['hr'].shape)
                 tf.print(   'sr shape', example_img['sr'].shape)
                 tf.print('uq shape', example_img['uq'].shape)
+                lr = example_img["lr"]
+                lr = tf.reshape(lr, (lr.shape[1], lr.shape[2]))
+                hr = example_img["hr"]
+                hr = tf.reshape(hr, (hr.shape[1], hr.shape[2]))
+                sr = example_img["sr"]
+                sr = tf.reshape(sr, (sr.shape[1], sr.shape[2]))
+                uq = example_img["uq"]
+                uq = tf.reshape(uq, (uq.shape[1], uq.shape[2]))
                 plot_reconstruction(
-                    (example_img["lr"]),
-                    (example_img["sr"]),
-                    (example_img["hr"]),
-                    mc_data=(example_img["uq"]),
+                    lr, sr, hr
+                    mc_data=uq,
                     vm=1,
                     nsub=4,
                     regular_image=False,
