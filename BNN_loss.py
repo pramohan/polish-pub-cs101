@@ -3,13 +3,14 @@ import tensorflow as tf
 import numpy as np
 
 
-def laplacian_loss(y_pred, y_true):
+def laplacian_loss(y_pred, y_true, show_parts = False):
     mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
     scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16) + 1e-7
-    # tf.print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
-    # tf.print('bottom_loss', tf.math.reduce_mean(scale_pred))
-    # tf.print('coef_loss', tf.math.reduce_mean(K.log(scale_pred)))
+    if show_parts:
+        tf.print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
+        tf.print('bottom_loss', tf.math.reduce_mean(scale_pred))
+        tf.print('coef_loss', tf.math.reduce_mean(K.log(scale_pred)))
     loss = tf.math.divide((K.abs(mean_true - mean_pred)), scale_pred) + K.log(
         scale_pred
     )

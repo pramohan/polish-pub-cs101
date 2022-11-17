@@ -89,7 +89,11 @@ class Trainer:
 
             #            lr = tf.image.adjust_gamma(lr, 0.5)
             #            print(tf.math.reduce_max(lr),tf.math.reduce_min(lr))
-            loss = self.train_step(lr, hr)
+            loss = -1
+            if step % evaluate_every == 0 or step == 2:
+                loss = self.train_step(lr, hr, show_parts=True)
+            else:
+                loss = self.train_step(lr, hr)
             # print('wtf loss', loss)
             loss_mean(loss)
 
@@ -174,7 +178,7 @@ class Trainer:
     #     return loss_value
 
     @tf.function
-    def train_step(self, lr, hr, gg=1.0):
+    def train_step(self, lr, hr, gg=1.0, show_parts = False):
         with tf.GradientTape() as tape:
             lr = tf.cast(lr, tf.float32)
             hr = tf.cast(hr, tf.float32)
@@ -184,7 +188,7 @@ class Trainer:
             # tf.print('sr_shape during trainnig', sr.shape)
             #            sr_ = sr - tf.reduce_min(sr)
             #            hr_ = hr - tf.reduce_min(hr)
-            loss_value = self.loss(sr, hr)
+            loss_value = self.loss(sr, hr, show_parts=show_parts)
 
         gradients = tape.gradient(loss_value, self.checkpoint.model.trainable_variables)
         self.checkpoint.optimizer.apply_gradients(
