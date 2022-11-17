@@ -6,7 +6,7 @@ import numpy as np
 def laplacian_loss(y_pred, y_true, show_parts = False):
     mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
-    scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16) + 1e-7
+    scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16)
     if show_parts:
         tf.print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
         tf.print('bottom_loss', tf.math.reduce_mean(scale_pred))
@@ -16,8 +16,19 @@ def laplacian_loss(y_pred, y_true, show_parts = False):
     )
     return loss
 
+def gaussian_loss(y_pred, y_true, show_parts = False):
+    mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
+    mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
+    scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16)
+    if show_parts:
+        tf.print('top_loss', tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
+        tf.print('bottom_loss', tf.math.reduce_mean(scale_pred))
+        tf.print('coef_loss', (tf.math.reduce_mean(scale_pred) / 2))
+    loss = tf.math.divide((K.pow(mean_true - mean_pred, 2)), 2 * K.exp(-1 * scale_pred)) + (tf.divide(scale_pred, 2))
+    return loss
 
-def gaussian_loss(y_pred, y_true):
+
+def gaussian_loss_non_exp(y_pred, y_true):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = K.pow(y_pred[:, :, :, 1], 2)
