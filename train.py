@@ -146,7 +146,7 @@ class Trainer:
                     # plot a histogram of the tensor values
                     plt.hist(tf_var.numpy().flatten(), bins=100)
                     plt.title('histogram of %s @%s' % (tf_var.name, str(step)))
-                    plt.show()
+                plt.show()
                 plt.hist(output_img.numpy().flatten(), bins=20)
                 plt.yscale('log')
                 plt.title('SR histogram')
