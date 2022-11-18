@@ -246,7 +246,7 @@ class WdsrTrainer(Trainer):
         model,
         checkpoint_dir,
         # learning_rate=PiecewiseConstantDecay(boundaries=[200000], values=[1e-3, 5e-4]),
-        learning_rate=ExponentialDecay(1e-4, decay_steps=50000, decay_rate=0.5),
+        learning_rate=ExponentialDecay(5e-4, decay_steps=50000, decay_rate=0.5),
         nbit=16,
         fn_kernel=None,
         loss=MeanAbsoluteError(),
