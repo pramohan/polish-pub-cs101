@@ -58,11 +58,11 @@ def wdsr_b_uq(
 
     # main branch
     #    m = conv2d_weightnorm(num_filters, 3, padding='same')(x)
-    m = conv2d_weightnorm(output_chan *num_filters, nchan, padding="same")(x)
+    m = conv2d_weightnorm(num_filters, nchan, padding="same")(x)
     for i in range(num_res_blocks):
         m = res_block_b(
             m,
-            output_chan *num_filters,
+            num_filters,
             res_block_expansion,
             kernel_size=3,
             scaling=res_block_scaling,
