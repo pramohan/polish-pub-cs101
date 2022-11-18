@@ -141,18 +141,18 @@ class Trainer:
 
                 output_img = tf.math.scalar_mul(2**nbit, sr)
                 output_uq = tf.math.scalar_mul(2**nbit, uq)
-                ax = plt.subplot(2, 1, 1)
+                ax = plt.subplot(len(self.model.trainable_weights) + 2, 1, 1)
                 ax.hist(output_img.numpy().flatten(), bins=20)
                 ax.set_yscale('log')
                 ax.set_title('SR histogram')
-                ax1 = plt.subplot(2, 1, 2)
+                ax1 = plt.subplot(len(self.model.trainable_weights) + 2, 1, 2)
                 ax1.hist(output_uq.numpy().flatten(), bins=20)
                 ax1.set_yscale('log')
                 ax1.set_title('UQ histogram')
 
                 for tf_var_idx, tf_var in enumerate(self.model.trainable_weights):
                     # plot a histogram of the tensor values
-                    ax = plt.subplot(len(self.model.trainable_weights), 1, tf_var_idx + 1)
+                    ax = plt.subplot(len(self.model.trainable_weights) + 2, 1, tf_var_idx + 3)
                     ax.hist(tf_var.numpy().flatten(), bins=100)
                     ax.set_title('histogram of %s @%s' % (tf_var.name, str(step)))
                 plt.show()
