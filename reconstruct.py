@@ -27,7 +27,7 @@ plt.rcParams.update({
                     'legend.loc': 'lower right'})
 
 def reconstruct(fn_img, fn_model, scale, fnhr=None,
-                nbit=16):
+                nbit=16, nchan=1):
     if fn_img.endswith('npy'):
         datalr = np.load(fn_img)[:, :]
     elif fn_img.endswith('png'):
@@ -47,10 +47,16 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None,
     else:
         datahr = None
 
-    model = wdsr_b(scale=scale, num_res_blocks=32)
+    model = wdsr_b(scale=scale, num_res_blocks=32, nchan=nchan)
     model.load_weights(fn_model)
-    datalr = datalr[:,:,None]
 
+    if len(datalr.shape)==3 and nchan==1:
+      datalr = datalr[:,:,0,None]
+    elif len(datalr.shape)==2:
+      datalr = datalr[:,:,None]
+     
+      
+    print(datalr.shape)
 
     datasr = resolve_single(model, datalr, nbit=nbit)
     datasr = datasr.numpy()
@@ -112,6 +118,8 @@ if __name__=='__main__':
                       help="high-res file name", default=None)
     parser.add_option('-x', dest='scale', 
                       help="spatial rebin factor", default=4)
+    parser.add_option('-n', dest='nchan', type=int,
+                      help="number of frequency/color channels", default=1)
     parser.add_option('-b', '--nbit', dest='nbit', type=int,
                       help="number of bits in image", default=16)
     parser.add_option('-p', '--plotit', dest='plotit', action="store_true",
@@ -121,7 +129,7 @@ if __name__=='__main__':
     fn_img, fn_model = args
 
     datalr, datasr, datahr = reconstruct(fn_img, fn_model, options.scale, 
-                                 fnhr=options.fnhr, nbit=options.nbit)
+                                 fnhr=options.fnhr, nbit=options.nbit, nchan=options.nchan)
 
     if datahr is not None:
         nsub = 3 
