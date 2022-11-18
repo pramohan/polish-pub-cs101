@@ -141,20 +141,25 @@ class Trainer:
 
                 output_img = tf.math.scalar_mul(2**nbit, sr)
                 output_uq = tf.math.scalar_mul(2**nbit, uq)
-                ax = plt.subplot(len(self.model.trainable_weights) + 2, 1, 1)
-                ax.hist(output_img.numpy().flatten(), bins=20)
-                ax.set_yscale('log')
-                ax.set_title('SR histogram')
-                ax1 = plt.subplot(len(self.model.trainable_weights) + 2, 1, 2)
-                ax1.hist(output_uq.numpy().flatten(), bins=20)
-                ax1.set_yscale('log')
-                ax1.set_title('UQ histogram')
 
+                fig, axs = plt.subplots(len(self.model.trainable_weights) + 2,1, facecolor='w', edgecolor='k')
+                # fig.subplots_adjust(hspace = .5, wspace=.001)
+
+                axs = axs.ravel()
                 for tf_var_idx, tf_var in enumerate(self.model.trainable_weights):
                     # plot a histogram of the tensor values
-                    ax = plt.subplot(len(self.model.trainable_weights) + 2, 1, tf_var_idx + 3)
-                    ax.hist(tf_var.numpy().flatten(), bins=100)
-                    ax.set_title('histogram of %s @%s' % (tf_var.name, str(step)))
+                    axs[tf_var_idx] = plt.subplot(len(self.model.trainable_weights) + 2, 1, tf_var_idx + 3)
+                    axs[tf_var_idx].hist(tf_var.numpy().flatten(), bins=100)
+                    axs[tf_var_idx].set_title('histogram of %s @%s' % (tf_var.name, str(step)))
+
+                axs[-2] = plt.subplot(len(self.model.trainable_weights) + 2, 1, 1)
+                axs[-2].hist(output_img.numpy().flatten(), bins=20)
+                axs[-2].set_yscale('log')
+                axs[-2].set_title('SR histogram')
+                axs[-1] = plt.subplot(len(self.model.trainable_weights) + 2, 1, 2)
+                axs[-1].hist(output_uq.numpy().flatten(), bins=20)
+                axs[-1].set_yscale('log')
+                axs[-1].set_title('UQ histogram')
                 plt.show()
                 with val_summary_writer.as_default():
                     tf.summary.scalar("psnr", psnr_value, step=step)
