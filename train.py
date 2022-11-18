@@ -131,27 +131,31 @@ class Trainer:
                 sr = tf.reshape(sr, (sr.shape[1], sr.shape[2]))
                 uq = example_img["uq"]
                 uq = tf.reshape(uq, (uq.shape[1], uq.shape[2]))
+                output_img= tf.math.scalar_mul(2**nbit, sr)
+                output_uq = tf.math.scalar_mul(2**nbit, uq)
                 plot_reconstruction(
-                    lr, tf.math.scalar_mul(2**nbit, sr), hr,
-                    mc_data=tf.math.scalar_mul(2**nbit,uq),
+                    lr, output_img, hr,
+                    mc_data=output_uq,
                     vm=1,
                     nsub=4,
                     regular_image=False,
                 )
 
-                output_img = tf.math.scalar_mul(2**nbit, sr)
-                output_uq = tf.math.scalar_mul(2**nbit, uq)
 
-                fig, axs = plt.subplots(len(self.model.trainable_weights) + 2,1, facecolor='w', edgecolor='k')
-                # fig.subplots_adjust(hspace = .5, wspace=.001)
-
-                axs = axs.ravel()
-                for tf_var_idx, tf_var in enumerate(self.model.trainable_weights):
+                for tf_var in self.model.trainable_weights:
                     # plot a histogram of the tensor values
-                    axs[tf_var_idx] = plt.subplot(len(self.model.trainable_weights) + 2, 1, tf_var_idx + 3)
-                    axs[tf_var_idx].hist(tf_var.numpy().flatten(), bins=100)
-                    axs[tf_var_idx].set_title('histogram of %s @%s' % (tf_var.name, str(step)))
+                    plt.hist(tf_var.numpy().flatten(), bins=100)
+                    plt.title('histogram of %s @%s' % (tf_var.name, str(step)))
+                    plt.show()
+                plt.hist(output_img.numpy().flatten(), bins=20)
+                plt.yscale('log')
+                plt.title('SR histogram')
                 plt.show()
+                plt.hist(output_uq.numpy().flatten(), bins=20)
+                plt.yscale('log')
+                plt.title('UQ histogram')
+                plt.show()
+
                 with val_summary_writer.as_default():
                     tf.summary.scalar("psnr", psnr_value, step=step)
                 duration = time.perf_counter() - self.now
