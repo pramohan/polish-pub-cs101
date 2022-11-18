@@ -17,7 +17,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay, ExponentialDecay
 
 from reconstruct import plot_reconstruction
-
+import matplotlib.pyplot as plt
 
 class Trainer:
     def __init__(
@@ -106,7 +106,7 @@ class Trainer:
                 with train_summary_writer.as_default():
                     tf.summary.scalar("loss", loss_mean.result(), step=step)
 
-            if step % evaluate_every == 0 or step == 2:
+            if step % evaluate_every == 0 or step == 20:
 
                 with train_summary_writer.as_default():
                     tf.summary.scalar("loss", loss_mean.result(), step=step)
@@ -138,6 +138,13 @@ class Trainer:
                     nsub=4,
                     regular_image=False,
                 )
+
+
+                for tf_var in self.model.trainable_weights:
+                    # plot a histogram of the tensor values
+                    plt.hist(tf_var.numpy().flatten(), bins=100)
+                    plt.title('histogram of %s @%s' % (tf_var.name, str(step)))
+                plt.show()
                 with val_summary_writer.as_default():
                     tf.summary.scalar("psnr", psnr_value, step=step)
                 duration = time.perf_counter() - self.now
