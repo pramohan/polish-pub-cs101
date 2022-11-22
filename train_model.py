@@ -154,6 +154,14 @@ if __name__ == "__main__":
         default=100,
     )
 
+    parser.add_option(
+        "--batchsize",
+        dest="batchsize",
+        type=int,
+        help="batchsize",
+        default=4,
+    )
+
     options, args = parser.parse_args()
     images_dir = args[0]
 
@@ -176,4 +184,5 @@ if __name__ == "__main__":
         nbit=options.nbit,
         num_res_blocks=options.num_res_blocks,
         train_steps=options.train_steps,
+        batchsize=options.batchsize,
     )

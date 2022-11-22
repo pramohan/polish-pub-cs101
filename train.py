@@ -16,7 +16,7 @@ from tensorflow.keras.metrics import Mean
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
 
-from model import evaluate
+import model
 
 
 class WdsrTrainer:
@@ -153,7 +153,7 @@ class WdsrTrainer:
         return loss_value
 
     def evaluate(self, dataset, nbit=16, show_image=False):
-        return evaluate(
+        return model.evaluate(
             self.checkpoint.model, dataset, nbit=nbit, show_image=show_image
         )
 
