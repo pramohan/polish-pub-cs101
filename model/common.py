@@ -50,6 +50,7 @@ def evaluate(model, dataset, nbit=8, show_image=False):
             lr_output, hr_output, sr_output = lr, hr, sr
     if show_image:
         # plot images here
+        print('v1')
         plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
