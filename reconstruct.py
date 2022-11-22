@@ -75,12 +75,14 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     vmaxsr = 22500
     vminhr = 0
     vmaxhr = 22500
-
-    if nsub == 2:
+    if datahr is None:
+        num_plots = 2
         fig = plt.figure(figsize=(10, 6))
-    if nsub == 3:
+    else:
+        num_plots = 3
         fig = plt.figure(figsize=(13, 6))
-    ax1 = plt.subplot(1, nsub, 1)
+
+    ax1 = plt.subplot(1, num_plots, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
     plt.axis("off")
     plt.imshow(
@@ -93,7 +95,7 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     )
     plt.setp(ax1.spines.values(), color="C1")
 
-    ax2 = plt.subplot(1, nsub, 2, sharex=ax1, sharey=ax1)
+    ax2 = plt.subplot(1, num_plots, 2, sharex=ax1, sharey=ax1)
     plt.title("POLISH reconstruction", c="C2", fontsize=17)
     plt.imshow(
         datasr[..., 0],
@@ -105,8 +107,8 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     )
     plt.axis("off")
 
-    if nsub == 3:
-        ax3 = plt.subplot(1, nsub, 3, sharex=ax1, sharey=ax1)
+    if num_plots == 3:
+        ax3 = plt.subplot(1, num_plots, 3, sharex=ax1, sharey=ax1)
         plt.title("True sky", c="k", fontsize=17)
         plt.imshow(
             datahr,

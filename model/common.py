@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
 
+from reconstruct import plot_reconstruction
+import matplotlib.pyplot as plt
 DIV2K_RGB_MEAN = np.array([0.4488, 0.4371, 0.4040]) * 255
 
 
@@ -33,15 +35,30 @@ def resolve16(model, lr_batch, nbit=16):
     return sr_batch
 
 
-def evaluate(model, dataset, nbit=8):
+def evaluate(model, dataset, nbit=8, show_image = False):
     psnr_values = []
-    for lr, hr in dataset:
+    lr_output, hr_output, sr_output = None, None, None
+    for idx, (lr, hr) in enumerate(dataset):
         sr = resolve16(model, lr, nbit=nbit)  # hack
         if lr.shape[-1] == 1:
             sr = sr[..., 0, None]
-        #        psnr_value = psnr16(hr, sr)[0]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
+        # we only need to show one, just pick the first one
+        if idx == 0:
+            lr_output, hr_output, sr_output = lr, hr, sr
+    if show_image:
+        # plot images here
+        plot_reconstruction(datalr = lr_output, datahr = hr_output, datasr = sr_output)
+
+        plt.hist(sr_output.numpy().flatten(), bins=20)
+        plt.yscale("log")
+        plt.title("SR histogram")
+        plt.show()
+        plt.hist(hr_output.numpy().flatten(), bins=20)
+        plt.yscale("log")
+        plt.title("HR histogram")
+        plt.show()
     return tf.reduce_mean(psnr_values)
 
 
