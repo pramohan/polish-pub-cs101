@@ -4,7 +4,7 @@ import sys
 
 import matplotlib.pylab as plt
 
-from model.common import resolve_single
+# from model.common import resolve_single
 from model.wdsr import wdsr_b
 from utils import load_image, plot_sample
 
@@ -60,7 +60,8 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, nchan=1):
 
     print(datalr.shape)
 
-    datasr = resolve_single(model, datalr, nbit=nbit)
+
+    datasr = resolve16(model, tf.expand_dims(datalr, axis=0), nbit=nbit)[0]
     datasr = datasr.numpy()
     return datalr, datasr, datahr
 
