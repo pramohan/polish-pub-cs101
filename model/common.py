@@ -48,16 +48,9 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         # we only need to show one, just pick the first one
         if idx == 0:
             lr_output, hr_output, sr_output = lr, hr, sr
-            print("lr shape: ", lr_output.shape)
-            print(np.squeeze(lr_output).shape)
-            print(tf.squeeze(lr_output).shape)
-            print(np.squeeze(hr_output).shape)
-            print(tf.squeeze(hr_output).shape)
-            print(np.squeeze(sr_output).shape)
-            print(  tf.squeeze(sr_output).shape)
     if show_image:
         # plot images here
-        # plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
+        plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
         plt.yscale("log")
