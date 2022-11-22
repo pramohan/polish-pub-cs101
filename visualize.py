@@ -6,6 +6,8 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
+    print(np.squeeze(datalr).shape)
+    print(tf.squeeze(datalr).shape)
     vminlr = 0
     vmaxlr = 22500
     vminsr = 0
