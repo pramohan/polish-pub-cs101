@@ -1,6 +1,7 @@
 import datetime
 import os
 import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -16,6 +17,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
 
 from model import evaluate
+
 
 class WdsrTrainer:
     def __init__(
@@ -103,10 +105,7 @@ class WdsrTrainer:
                 loss_value = loss_mean.result()
                 loss_mean.reset_states()
 
-                psnr_value = self.evaluate(
-                    valid_dataset, nbit=nbit, show_image=True
-                )
-
+                psnr_value = self.evaluate(valid_dataset, nbit=nbit, show_image=True)
 
                 # update the logs
                 with train_summary_writer.as_default():
@@ -115,7 +114,6 @@ class WdsrTrainer:
                 print(
                     f"{step}/{steps}: loss = {loss_value.numpy():.3f}, PSNR = {psnr_value.numpy():3f} ({duration:.2f}s)"
                 )
-
 
                 for tf_var in self.model.trainable_weights:
                     # plot a histogram of the tensor values
@@ -136,9 +134,8 @@ class WdsrTrainer:
     def kernel_loss(self, sr, lr):
         lr_estimate = signal.fftconvolve(sr.numpy(), self.kernel, mode="same")
         print(lr.shape, lr_estimate[2::4, 2::4].shape)
-        raise Exception('kernel loss called')
+        raise Exception("kernel loss called")
         exit()
-
 
     @tf.function
     def train_step(self, lr, hr, gg=1.0):
@@ -156,7 +153,9 @@ class WdsrTrainer:
         return loss_value
 
     def evaluate(self, dataset, nbit=16, show_image=False):
-        return evaluate(self.checkpoint.model, dataset, nbit=nbit, show_image=show_image)
+        return evaluate(
+            self.checkpoint.model, dataset, nbit=nbit, show_image=show_image
+        )
 
     def restore(self):
         if self.checkpoint_manager.latest_checkpoint:

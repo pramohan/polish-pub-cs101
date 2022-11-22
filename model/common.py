@@ -1,8 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
 from reconstruct import plot_reconstruction
-import matplotlib.pyplot as plt
+
 DIV2K_RGB_MEAN = np.array([0.4488, 0.4371, 0.4040]) * 255
 
 
@@ -35,7 +36,7 @@ def resolve16(model, lr_batch, nbit=16):
     return sr_batch
 
 
-def evaluate(model, dataset, nbit=8, show_image = False):
+def evaluate(model, dataset, nbit=8, show_image=False):
     psnr_values = []
     lr_output, hr_output, sr_output = None, None, None
     for idx, (lr, hr) in enumerate(dataset):
@@ -49,7 +50,7 @@ def evaluate(model, dataset, nbit=8, show_image = False):
             lr_output, hr_output, sr_output = lr, hr, sr
     if show_image:
         # plot images here
-        plot_reconstruction(datalr = lr_output, datahr = hr_output, datasr = sr_output)
+        plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
         plt.yscale("log")

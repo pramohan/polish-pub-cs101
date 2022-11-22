@@ -4,7 +4,7 @@ import sys
 
 import matplotlib.pylab as plt
 
-from model import resolve_single
+from model.common import resolve_single
 from model.wdsr import wdsr_b
 from utils import load_image, plot_sample
 
