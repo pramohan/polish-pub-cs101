@@ -49,6 +49,13 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         if idx == 0:
             lr_output, hr_output, sr_output = lr, hr, sr
     if show_image:
+        print("lr shape: ", lr_output.shape)
+        print(np.squeeze(lr_output).shape)
+        print(tf.squeeze(lr_output).shape)
+        print(np.squeeze(hr_output).shape)
+        print(tf.squeeze(hr_output).shape)
+        print(np.squeeze(sr_output).shape)
+        print(  tf.squeeze(sr_output).shape)
         # plot images here
         plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
 

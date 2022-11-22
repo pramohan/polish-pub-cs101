@@ -6,8 +6,6 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
-    print(np.squeeze(datalr).shape)
-    print(tf.squeeze(datalr).shape)
     vminlr = 0
     vmaxlr = 22500
     vminsr = 0
@@ -24,8 +22,6 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     ax1 = plt.subplot(1, num_plots, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
     plt.axis("off")
-    print(np.squeeze(datalr).shape)
-    print(tf.squeeze(datalr).shape)
     plt.imshow(
         np.squeeze(datalr),
         cmap=cmap,
