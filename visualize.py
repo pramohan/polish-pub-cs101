@@ -2,7 +2,10 @@ import matplotlib.pylab as plt
 import numpy as np
 import tensorflow as tf
 
-def plot_reconstruction(datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, cmap="afmhot"):
+
+def plot_reconstruction(
+    datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, cmap="afmhot"
+):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
@@ -21,7 +24,6 @@ def plot_reconstruction(datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, 
     else:
         num_plots = 5
         fig = plt.figure(figsize=(22, 6))
-
 
     ax1 = plt.subplot(1, num_plots, 1)
     plt.title("Dirty map", color="C1", fontsize=17)

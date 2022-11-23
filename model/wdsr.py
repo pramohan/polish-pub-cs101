@@ -13,7 +13,7 @@ def wdsr_b_uq(
     res_block_expansion=6,
     res_block_scaling=None,
     nchan=1,
-    output_chan = 2,
+    output_chan=2,
 ):
 
     x_in = Input(shape=(None, None, nchan))
@@ -31,13 +31,19 @@ def wdsr_b_uq(
             scaling=res_block_scaling,
         )
     m = conv2d_weightnorm(
-        output_chan * nchan * scale**2, 3, padding="same", name=f"conv2d_main_scale_{scale}"
+        output_chan * nchan * scale**2,
+        3,
+        padding="same",
+        name=f"conv2d_main_scale_{scale}",
     )(m)
     m = Lambda(pixel_shuffle(scale))(m)
 
     # skip branch
     s = conv2d_weightnorm(
-        output_chan * nchan * scale**2, 5, padding="same", name=f"conv2d_skip_scale_{scale}"
+        output_chan * nchan * scale**2,
+        5,
+        padding="same",
+        name=f"conv2d_skip_scale_{scale}",
     )(x)
     s = Lambda(pixel_shuffle(scale))(s)
 

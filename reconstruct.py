@@ -1,12 +1,13 @@
 import optparse
 import os
 import sys
-from visualize import plot_reconstruction
+
 import matplotlib.pylab as plt
 
 # from model.common import resolve_single
 from model.wdsr import wdsr_b
 from utils import load_image, plot_sample
+from visualize import plot_reconstruction
 
 plt.rcParams.update(
     {
@@ -60,11 +61,9 @@ def reconstruct(fn_img, fn_model, scale, fnhr=None, nbit=16, nchan=1):
 
     print(datalr.shape)
 
-
     datasr = resolve16(model, tf.expand_dims(datalr, axis=0), nbit=nbit)[0]
     datasr = datasr.numpy()
     return datalr, datasr, datahr
-
 
 
 if __name__ == "__main__":

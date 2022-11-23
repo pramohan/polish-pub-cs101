@@ -1,6 +1,6 @@
-import tensorflow.keras.backend as K
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
+import tensorflow.keras.backend as K
 
 
 def laplacian_loss(y_pred, y_true, show_parts=False):
@@ -54,12 +54,11 @@ def gaussian_denormalized_noexp(y_pred, y_true, show_parts=False):
     if show_parts:
         tf.print("top_loss", tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
         tf.print("bottom_loss", tf.math.reduce_mean((scale_pred)))
-        tf.print("coef_loss", (tf.math.reduce_mean( K.log(scale_pred))))
+        tf.print("coef_loss", (tf.math.reduce_mean(K.log(scale_pred))))
     loss = tf.math.divide((K.pow(mean_true - mean_pred, 2)), scale_pred) + (
         K.log(scale_pred)
     )
     return loss
-
 
 
 def gaussian_normalized_noexp(y_pred, y_true, show_parts=False):
@@ -69,14 +68,11 @@ def gaussian_normalized_noexp(y_pred, y_true, show_parts=False):
     if show_parts:
         tf.print("top_loss", tf.math.reduce_mean(K.abs(mean_true - mean_pred)))
         tf.print("bottom_loss", tf.math.reduce_mean((scale_pred)))
-        tf.print("coef_loss", (tf.math.reduce_mean( K.log(scale_pred))))
+        tf.print("coef_loss", (tf.math.reduce_mean(K.log(scale_pred))))
     loss = tf.math.divide((K.pow(mean_true - mean_pred, 2)), scale_pred) + (
         K.log(scale_pred)
     )
     return loss
-
-
-
 
 
 def gaussian_loss_non_exp(y_pred, y_true):

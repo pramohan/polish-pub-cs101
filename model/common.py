@@ -38,7 +38,7 @@ def resolve16(model, lr_batch, nbit=16):
 
 def evaluate(model, dataset, nbit=8, show_image=False):
     psnr_values = []
-    has_uq = 'uq' in model._name
+    has_uq = "uq" in model._name
     lr_output, hr_output, sr_output, uq_output = None, None, None, None
     for idx, (lr, hr) in enumerate(dataset):
         output = resolve16(model, lr, nbit=nbit)  # hack
@@ -56,7 +56,9 @@ def evaluate(model, dataset, nbit=8, show_image=False):
             lr_output, hr_output, sr_output, uq_output = lr, hr, sr, uq
     if show_image:
         # plot images here
-        plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output, datauq=uq_output)
+        plot_reconstruction(
+            datalr=lr_output, datahr=hr_output, datasr=sr_output, datauq=uq_output
+        )
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
         plt.yscale("log")

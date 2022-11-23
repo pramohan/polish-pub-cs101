@@ -4,10 +4,16 @@ from optparse import OptionParser
 import numpy as np
 import tensorflow as tf
 
+from BNN_loss import (
+    gaussian_denormalized_exp,
+    gaussian_denormalized_noexp,
+    gaussian_normalized_exp,
+    gaussian_normalized_noexp,
+)
 from data import RadioSky
 from model.wdsr import wdsr_b_uq
 from train import WdsrTrainer
-from BNN_loss import gaussian_normalized_exp
+
 
 def main(
     images_dir,
@@ -64,13 +70,14 @@ def main(
     )
 
     wdsr_b_uq_model = wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan)
-    current_loss = gaussian_normalized_exp
-    print('-'*50)
+    # current_loss = gaussian_normalized_exp
+    current_loss = gaussian_denormalized_exp
+    print("-" * 50)
     print("Model Architecture:")
     print(wdsr_b_uq_model.summary())
-    print('-'*50)
+    print("-" * 50)
     print("\n\nLoss function used: ", current_loss.__name__)
-    print('\n\n' + '-'*50)
+    print("\n\n" + "-" * 50)
     trainer = WdsrTrainer(
         model=wdsr_b_uq_model,
         loss=current_loss,
