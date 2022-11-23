@@ -44,7 +44,7 @@ def wdsr_b_uq(
     x = Add()([m, s])
     x = Lambda(denormalize)(x)
 
-    return Model(x_in, x, name="wdsr")
+    return Model(x_in, x, name="wdsr_b_uq")
 
 
 def wdsr_a(
