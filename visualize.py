@@ -17,10 +17,10 @@ def plot_reconstruction(datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, 
         fig = plt.figure(figsize=(10, 6))
     elif datauq is None:
         num_plots = 3
-        fig = plt.figure(figsize=(13, 6))
-    else:
-        num_plots = 4
         fig = plt.figure(figsize=(16, 6))
+    else:
+        num_plots = 5
+        fig = plt.figure(figsize=(22, 6))
 
 
     ax1 = plt.subplot(1, num_plots, 1)
@@ -68,11 +68,22 @@ def plot_reconstruction(datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, 
             np.squeeze(datauq),
             cmap=cmap,
             vmax=vmaxsr,
-            vmin=vminsr,
+            vmin=np.max(datauq),
             aspect="auto",
             extent=[0, 1, 0, 1],
         )
         plt.axis("off")
-
+        ax4 = plt.subplot(1, num_plots, 5, sharex=ax1, sharey=ax1)
+        plt.title("Log Uncertainty", c="k", fontsize=17)
+        plt.imshow(
+            np.squeeze(np.log(datauq)),
+            cmap=cmap,
+            vmax=vmaxsr,
+            vmin=np.max(np.log(datauq)),
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
+        plt.axis("off")
+    plt.colorbar()
     plt.tight_layout()
     plt.show()

@@ -44,13 +44,8 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         output = resolve16(model, lr, nbit=nbit)  # hack
         sr, uq = None, None
         if has_uq:
-            print('shape prints!')
-            print(output.shape)
             sr = tf.expand_dims(output[:, :, :, 0], -1)
-            print(sr.shape)
             uq = tf.expand_dims(output[:, :, :, 1], -1)
-            print(uq.shape)
-            print(hr.shape)
         else:
             if lr.shape[-1] == 1:
                 sr = output[..., 0, None]
@@ -61,7 +56,6 @@ def evaluate(model, dataset, nbit=8, show_image=False):
             lr_output, hr_output, sr_output, uq_output = lr, hr, sr, uq
     if show_image:
         # plot images here
-        print('v1')
         plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output, datauq=uq_output)
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
