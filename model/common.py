@@ -41,19 +41,19 @@ def evaluate(model, dataset, nbit=8, show_image=False):
     has_uq = 'uq' in model._name
     lr_output, hr_output, sr_output, uq_output = None, None, None, None
     for idx, (lr, hr) in enumerate(dataset):
-        sr = resolve16(model, lr, nbit=nbit)  # hack
-        uq = None
+        output = resolve16(model, lr, nbit=nbit)  # hack
+        sr, uq = None, None
         if has_uq:
             print('shape prints!')
+            print(output.shape)
+            sr = tf.expand_dims(output[:, :, :, 0], -1)
             print(sr.shape)
-            sr = tf.expand_dims(sr[:, :, :, 0], -1)
-            print(sr.shape)
-            uq = tf.expand_dims(sr[:, :, :, 1], -1)
+            uq = tf.expand_dims(output[:, :, :, 1], -1)
             print(uq.shape)
             print(hr.shape)
         else:
             if lr.shape[-1] == 1:
-                sr = sr[..., 0, None]
+                sr = output[..., 0, None]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
         # we only need to show one, just pick the first one
