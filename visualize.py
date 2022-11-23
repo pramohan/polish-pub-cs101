@@ -2,7 +2,7 @@ import matplotlib.pylab as plt
 import numpy as np
 import tensorflow as tf
 
-def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"):
+def plot_reconstruction(datalr, datasr, datahr=None, datauq=None, vm=1, nsub=2, cmap="afmhot"):
     """Plot the dirty image, POLISH reconstruction,
     and (optionally) the high resolution true sky image
     """
@@ -15,9 +15,13 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     if datahr is None:
         num_plots = 2
         fig = plt.figure(figsize=(10, 6))
-    else:
+    elif datauq is None:
         num_plots = 3
         fig = plt.figure(figsize=(13, 6))
+    else:
+        num_plots = 4
+        fig = plt.figure(figsize=(16, 6))
+
 
     ax1 = plt.subplot(1, num_plots, 1)
     plt.title("Dirty map", color="C1", fontsize=17)
@@ -44,11 +48,24 @@ def plot_reconstruction(datalr, datasr, datahr=None, vm=1, nsub=2, cmap="afmhot"
     )
     plt.axis("off")
 
-    if num_plots == 3:
+    if num_plots >= 3:
         ax3 = plt.subplot(1, num_plots, 3, sharex=ax1, sharey=ax1)
         plt.title("True sky", c="k", fontsize=17)
         plt.imshow(
             np.squeeze(datahr),
+            cmap=cmap,
+            vmax=vmaxsr,
+            vmin=vminsr,
+            aspect="auto",
+            extent=[0, 1, 0, 1],
+        )
+        plt.axis("off")
+
+    if num_plots >= 4:
+        ax4 = plt.subplot(1, num_plots, 4, sharex=ax1, sharey=ax1)
+        plt.title("Uncertainty", c="k", fontsize=17)
+        plt.imshow(
+            np.squeeze(datauq),
             cmap=cmap,
             vmax=vmaxsr,
             vmin=vminsr,

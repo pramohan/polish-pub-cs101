@@ -7,7 +7,7 @@ import tensorflow as tf
 from data import RadioSky
 from model.wdsr import wdsr_b_uq
 from train import WdsrTrainer
-
+from BNN_loss import gaussian_normalized_exp
 
 def main(
     images_dir,
@@ -62,8 +62,18 @@ def main(
         "Note we are assuming the following model checkpoint:",
         f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
+
+    wdsr_b_uq_model = wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan)
+    current_loss = gaussian_normalized_exp
+    print('-'*50)
+    print("Model Architecture:")
+    print(wdsr_b_uq_model.summary())
+    print('-'*50)
+    print("\n\nLoss function used: ", current_loss.__name__)
+    print('\n\n' + '-'*50)
     trainer = WdsrTrainer(
-        model=wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
+        model=wdsr_b_uq_model,
+        loss=current_loss,
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
 

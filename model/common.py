@@ -38,20 +38,26 @@ def resolve16(model, lr_batch, nbit=16):
 
 def evaluate(model, dataset, nbit=8, show_image=False):
     psnr_values = []
-    lr_output, hr_output, sr_output = None, None, None
+    has_uq = 'uq' in model.__name__
+    lr_output, hr_output, sr_output, uq_output = None, None, None, None
     for idx, (lr, hr) in enumerate(dataset):
         sr = resolve16(model, lr, nbit=nbit)  # hack
-        if lr.shape[-1] == 1:
-            sr = sr[..., 0, None]
+        uq = None
+        if has_uq:
+            sr = sr[:, :, :, 0, None]
+            uq = sr[:, :, :, 1, None]
+        else:
+            if lr.shape[-1] == 1:
+                sr = sr[..., 0, None]
         psnr_value = psnr(hr, sr, nbit=nbit)[0]
         psnr_values.append(psnr_value)
         # we only need to show one, just pick the first one
         if idx == 0:
-            lr_output, hr_output, sr_output = lr, hr, sr
+            lr_output, hr_output, sr_output, uq_output = lr, hr, sr, uq
     if show_image:
         # plot images here
         print('v1')
-        plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output)
+        plot_reconstruction(datalr=lr_output, datahr=hr_output, datasr=sr_output, datauq=uq_output)
 
         plt.hist(sr_output.numpy().flatten(), bins=20)
         plt.yscale("log")
@@ -61,6 +67,11 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         plt.yscale("log")
         plt.title("HR histogram")
         plt.show()
+        if has_uq:
+            plt.hist(uq_output.numpy().flatten(), bins=20)
+            plt.yscale("log")
+            plt.title("Uncertainty histogram")
+            plt.show()
     return tf.reduce_mean(psnr_values)
 
 
