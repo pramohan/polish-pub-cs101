@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 from data import RadioSky
-from model.wdsr import wdsr_b
+from model.wdsr import wdsr_b_uq
 from train import WdsrTrainer
 
 
@@ -63,7 +63,7 @@ def main(
         f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
     trainer = WdsrTrainer(
-        model=wdsr_b(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
+        model=wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan),
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
 
@@ -152,6 +152,13 @@ if __name__ == "__main__":
         type=int,
         help="number of validation images",
         default=100,
+    )
+    parser.add_option(
+        "--batchsize",
+        dest="batchsize",
+        type=int,
+        help="number of validation images",
+        default=4,
     )
 
     parser.add_option(

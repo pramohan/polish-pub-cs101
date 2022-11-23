@@ -6,6 +6,47 @@ from tensorflow.python.keras.models import Model
 from model.common import denormalize, normalize, pixel_shuffle
 
 
+def wdsr_b_uq(
+    scale,
+    num_filters=32,
+    num_res_blocks=8,
+    res_block_expansion=6,
+    res_block_scaling=None,
+    nchan=1,
+    output_chan = 2,
+):
+
+    x_in = Input(shape=(None, None, nchan))
+    x = Lambda(normalize)(x_in)
+
+    # main branch
+    #    m = conv2d_weightnorm(num_filters, 3, padding='same')(x)
+    m = conv2d_weightnorm(num_filters, nchan, padding="same")(x)
+    for i in range(num_res_blocks):
+        m = res_block_b(
+            m,
+            num_filters,
+            res_block_expansion,
+            kernel_size=3,
+            scaling=res_block_scaling,
+        )
+    m = conv2d_weightnorm(
+        output_chan * nchan * scale**2, 3, padding="same", name=f"conv2d_main_scale_{scale}"
+    )(m)
+    m = Lambda(pixel_shuffle(scale))(m)
+
+    # skip branch
+    s = conv2d_weightnorm(
+        output_chan * nchan * scale**2, 5, padding="same", name=f"conv2d_skip_scale_{scale}"
+    )(x)
+    s = Lambda(pixel_shuffle(scale))(s)
+
+    x = Add()([m, s])
+    x = Lambda(denormalize)(x)
+
+    return Model(x_in, x, name="wdsr")
+
+
 def wdsr_a(
     scale,
     num_filters=32,
