@@ -46,10 +46,11 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         if has_uq:
             print('shape prints!')
             print(sr.shape)
-            sr = sr[:, :, :, 0]
+            sr = tf.expand_dims(sr[:, :, :, 0], -1)
             print(sr.shape)
-            uq = sr[:, :, :, 1]
+            uq = tf.expand_dims(sr[:, :, :, 1], -1)
             print(uq.shape)
+            print(hr.shape)
         else:
             if lr.shape[-1] == 1:
                 sr = sr[..., 0, None]
