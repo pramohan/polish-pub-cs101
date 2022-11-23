@@ -44,8 +44,12 @@ def evaluate(model, dataset, nbit=8, show_image=False):
         sr = resolve16(model, lr, nbit=nbit)  # hack
         uq = None
         if has_uq:
-            sr = sr[:, :, :, 0, None]
-            uq = sr[:, :, :, 1, None]
+            print('shape prints!')
+            print(sr.shape)
+            sr = sr[:, :, :, 0]
+            print(sr.shape)
+            uq = sr[:, :, :, 1]
+            print(uq.shape)
         else:
             if lr.shape[-1] == 1:
                 sr = sr[..., 0, None]
