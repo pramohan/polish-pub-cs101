@@ -3,7 +3,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 
 
-def laplacian_loss(y_pred, y_true, show_parts=False):
+def laplacian_loss(y_pred, y_true, show_parts=True):
     mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     # mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
     mean_pred = y_pred[:, :, :, 0]
@@ -19,7 +19,7 @@ def laplacian_loss(y_pred, y_true, show_parts=False):
     return loss
 
 
-def gaussian_normalized_exp(y_pred, y_true, show_parts=False):
+def gaussian_normalized_exp(y_pred, y_true, show_parts=True):
     mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
     scale_pred = tf.math.divide(y_pred[:, :, :, 1], 2**16)
@@ -33,7 +33,7 @@ def gaussian_normalized_exp(y_pred, y_true, show_parts=False):
     return loss
 
 
-def gaussian_denormalized_exp(y_pred, y_true, show_parts=False):
+def gaussian_denormalized_exp(y_pred, y_true, show_parts=True):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = y_pred[:, :, :, 1]
@@ -47,7 +47,7 @@ def gaussian_denormalized_exp(y_pred, y_true, show_parts=False):
     return loss
 
 
-def gaussian_denormalized_noexp(y_pred, y_true, show_parts=False):
+def gaussian_denormalized_noexp(y_pred, y_true, show_parts=True):
     mean_true = y_true[:, :, :, 0]
     mean_pred = y_pred[:, :, :, 0]
     scale_pred = K.pow(y_pred[:, :, :, 1], 2)
@@ -61,7 +61,7 @@ def gaussian_denormalized_noexp(y_pred, y_true, show_parts=False):
     return loss
 
 
-def gaussian_normalized_noexp(y_pred, y_true, show_parts=False):
+def gaussian_normalized_noexp(y_pred, y_true, show_parts=True):
     mean_true = tf.math.divide(y_true[:, :, :, 0], 2**16)
     mean_pred = tf.math.divide(y_pred[:, :, :, 0], 2**16)
     scale_pred = K.pow(tf.math.divide(y_pred[:, :, :, 1], 2**16), 2)
