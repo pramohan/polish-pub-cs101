@@ -95,8 +95,8 @@ def main(
         valid_ds.take(10),
         steps=train_steps,
         evaluate_every=1000,
-        save_best_only=True
-        # fnoutweights=fnoutweights.strip(".h5") # Added this
+        save_best_only=True,
+        fnoutweights=fnoutweights.strip(".h5") # Added this
     )
 
     trainer.restore()
