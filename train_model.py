@@ -69,8 +69,9 @@ def main(
         f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
 
+    # Using modified version of wdsr_b that does uncertainty quantification
     wdsr_b_uq_model = wdsr_b_uq(scale=scale, num_res_blocks=num_res_blocks, nchan=nchan)
-    # current_loss = gaussian_normalized_exp
+    # Importing gaussian loss function
     current_loss = gaussian_normalized_exp
     print("-" * 50)
     print("Model Architecture:")
@@ -80,7 +81,7 @@ def main(
     print("\n\n" + "-" * 50)
     trainer = WdsrTrainer(
         model=wdsr_b_uq_model,
-        loss=current_loss,
+        loss=current_loss, # New loss is inputted through here
         checkpoint_dir=f".ckpt/%s" % fnoutweights.strip(".h5"),
     )
 
@@ -94,8 +95,8 @@ def main(
         valid_ds.take(10),
         steps=train_steps,
         evaluate_every=1000,
-        save_best_only=True,
-        fnoutweights=fnoutweights.strip(".h5"),
+        save_best_only=True
+        # fnoutweights=fnoutweights.strip(".h5") # Added this
     )
 
     trainer.restore()
@@ -175,14 +176,6 @@ if __name__ == "__main__":
         dest="batchsize",
         type=int,
         help="number of validation images",
-        default=4,
-    )
-
-    parser.add_option(
-        "--batchsize",
-        dest="batchsize",
-        type=int,
-        help="batchsize",
         default=4,
     )
 
